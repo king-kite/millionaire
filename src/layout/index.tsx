@@ -88,7 +88,7 @@ const scores = [
 scores.reverse();
 
 const scoresLength = scores.length;
-const blinkCount = 6; // number of times to blink at the top
+const blinkCount = 8; // number of times to blink at the top
 const startAnimationCounter = 100;
 
 function Layout() {
