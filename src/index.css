@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-font: 'Montserrat', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-color: #cbd5e0 #f1f1f1;
+  scrollbar-width: thin;
+
+  @apply m-0 p-0 select-none;
+}
+
+body {
+  font-family: var(--primary-font);
+
+  @apply bg-primary-600;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+ul,
+button,
+button span {
+  font-family: var(--primary-font);
+  @apply m-0 p-0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.layout-container {
+  @apply max-w-3xl mx-auto border-8 border-primary-500 border-solid border-t-primary-700 border-r-primary-700 w-full;
+}
+
+.layout-wrapper {
+  @apply flex flex-col items-center justify-center min-h-screen p-4;
+}
+
+.footer-container {
+  @apply max-w-3xl mx-auto border border-gray-100 border-solid py-1 w-full;
+}
+
+.footer-title {
+  @apply font-black px-1 text-lg text-gray-200 tracking-wider md:text-2xl;
+}
+
+.horizontal-line {
+  @apply bg-gray-200 h-[1px] my-1 w-11/12;
+}
+
+.footer-description {
+  @apply font-semibold px-1 text-base text-center text-gray-200 tracking-widest uppercase md:text-lg;
+}
+
+.footer-description span {
+  @apply md:text-2xl;
+}
+
+.title-container {
+  @apply flex justify-between min-h-[5rem] px-8 py-2;
+}
+
+.title-text {
+  @apply bg-clip-text bg-gradient-to-br from-secondary-300 to-primary-300 text-transparent font-bold text-base uppercase md:text-2xl;
+}
+
+.title-text:nth-child(even) {
+  @apply flex items-end;
+}
+
+.title-text:last-child {
+  @apply text-5xl items-end;
+}
+
+.title-text-big-first {
+  @apply flex items-end !text-6xl;
+  line-height: 0.9;
+}
+
+.main-container {
+  @apply gap-x-3 grid grid-cols-6 mb-2 px-4 py-1;
+}
+
+.app-outlet {
+  @apply col-span-4 gap-2 grid grid-rows-6;
+}
+
+.app-screens {
+  @apply border-[2px] border-primary-500 border-solid row-span-4 rounded-lg;
+}
+
+.options-container {
+  @apply grid grid-cols-2 gap-4 p-4 row-span-2;
+}
+
+.question-option {
+  @apply border-2 border-x-0 border-primary-400 border-solid flex items-center p-2 rounded-2xl;
+}
+
+.question-option.no-answer {
+  @apply cursor-pointer hover:bg-yellow-600;
+}
+
+.question-option.selected-answer {
+  @apply bg-yellow-600;
+}
+
+.question-option.right-answer {
+  animation-name: right-answer;
+  animation-duration: 1.25s;
+  animation-iteration-count: infinite;
+}
+
+.question-option.wrong-answer {
+  animation-name: wrong-answer;
+  animation-duration: 1.25s;
+  animation-iteration-count: infinite;
+}
+
+.question-option p {
+  @apply flex font-medium items-center text-gray-100 text-sm tracking-wide;
+}
+
+.question-option p::before {
+  content: '';
+  @apply bg-orange-700 block h-3 mr-2 rounded-full w-3;
+}
+
+.question-option p span {
+  @apply font-medium inline-block mr-1 text-orange-700 tracking-widest;
+}
+
+.side-container {
+  @apply border-2 border-primary-500 border-solid col-span-2 outline-1 outline-gray-700 rounded-lg;
+}
+
+.lifelines {
+  @apply flex items-center justify-between p-2;
+}
+
+.lifeline {
+  @apply bg-gray-900 border-2 border-primary-500 border-solid cursor-pointer flex items-center justify-center h-12 rounded-full w-12;
+}
+
+.lifeline span {
+  @apply text-gray-100 text-xl;
+}
+
+.lifeline span.small {
+  @apply text-xs;
+}
+
+.lifeline span.lifeline-icon {
+  @apply relative top-[2.5px];
+}
+
+.lifeline:hover {
+  @apply bg-tertiary-400 border-tertiary-400 duration-300 scale-110 transform;
+}
+
+.lifeline:hover span {
+  @apply font-semibold text-gray-800;
+}
+
+.score-container {
+  @apply border-x-0 border-y border-primary-500 border-solid px-4 py-2;
+}
+
+.score {
+  @apply font-extrabold text-gray-100 text-lg tracking-widest;
+}
+
+.scores-list {
+  @apply pt-1;
+}
+
+.score-option {
+  @apply font-bold flex items-center justify-between p-1 text-tertiary-500 tracking-wide;
+}
+
+.score-option:first-child {
+  @apply rounded-t-md;
+}
+
+.score-option:last-child {
+  @apply rounded-b-md;
+}
+
+.score-option span:first-child {
+  @apply text-right w-2/12;
+}
+
+.score-option span:last-child {
+  @apply w-9/12;
+}
+
+.score-option.breakpoint {
+  @apply text-gray-100;
+}
+
+.score-option.active {
+  @apply bg-tertiary-500;
+}
+
+.score-option.active span:first-child {
+  @apply text-gray-100;
+}
+
+.score-option.active span:last-child {
+  @apply font-extrabold text-gray-900;
+}
+
+/* animations */
+
+@keyframes right-answer {
+  0% {
+    @apply bg-transparent;
+  }
+
+  25% {
+    @apply bg-green-600;
+  }
+
+  50% {
+    @apply bg-transparent;
+  }
+
+  75% {
+    @apply bg-green-600;
+  }
+
+  100% {
+    @apply bg-transparent;
+  }
+}
+
+@keyframes wrong-answer {
+  0% {
+    @apply bg-transparent;
+  }
+
+  25% {
+    @apply bg-red-600;
+  }
+
+  50% {
+    @apply bg-transparent;
+  }
+
+  75% {
+    @apply bg-red-600;
+  }
+
+  100% {
+    @apply bg-transparent;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  height: 14.5px;
+  width: 14.5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: #edf2f7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border: 4px solid #edf2f7;
+  border-radius: 100vh;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
