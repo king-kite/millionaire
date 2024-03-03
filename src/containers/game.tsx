@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
 import { Button } from '../components/controls';
-import { HOME_PAGE } from '../config/routes';
+import { HOME_PAGE, LOSE_GAME_PAGE } from '../config/routes';
 import { useLayoutOutletContext } from '../layout/context';
 
 function Game() {
@@ -9,6 +9,7 @@ function Game() {
     acceptedConditions,
     activeQuestion,
     checkAnswer,
+    gameLost,
     gameStart,
     loadingQuestions: loading,
     selectedAnswer,
@@ -18,6 +19,8 @@ function Game() {
 
   // Only start a game if the player accepts the terms
   if (!acceptedConditions) return <Navigate to={HOME_PAGE} />;
+
+  if (gameLost) return <Navigate to={LOSE_GAME_PAGE} />;
 
   return (
     <div className="h-full p-4 relative w-full">

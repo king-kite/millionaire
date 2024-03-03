@@ -17,7 +17,7 @@ function QuestionOptions({ answer, disabled, setAnswer, options }: QuestionOptio
                 : option.wrong
                 ? 'wrong-answer'
                 : disabled
-                ? 'hover:!bg-transparent'
+                ? '!cursor-not-allowed hover:!bg-transparent'
                 : 'no-answer'
             } ${answer === option.id ? 'selected-answer' : !answer && option.title ? '' : ''}`}
             key={option.id}

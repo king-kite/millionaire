@@ -13,6 +13,7 @@ import type { QuestionOptionsType } from '../types';
 
 function Layout() {
   const [acceptedConditions, setAcceptedConditions] = React.useState(false);
+  const [gameLost, setGameLost] = React.useState(false);
   const [gameStart, setGameStart] = React.useState(false);
   const [questionChoices, setQuestionChoices] = React.useState<QuestionOptionsType['options']>([]);
   const [questionOptionsDisabled, setQuestionOptionsDisabled] = React.useState(false);
@@ -43,6 +44,7 @@ function Layout() {
 
   // start the game over again
   const startOver = React.useCallback(() => {
+    setGameLost(false);
     setGameStart(false);
     setQuestionOptionsDisabled(false);
     setScoreId(1);
@@ -51,7 +53,9 @@ function Layout() {
   }, [refetch]);
 
   // Handle Wrong Answer
-  const handleWrongAnswer = React.useCallback(() => {}, []);
+  const handleWrongAnswer = React.useCallback(() => {
+    setGameLost(true);
+  }, []);
 
   // Handle Right Answer
   const handleRightAnswer = React.useCallback(() => {
@@ -101,6 +105,7 @@ function Layout() {
 
       activeQuestion,
       checkAnswer,
+      gameLost,
       gameStart,
       scoreId,
       startOver,
@@ -111,6 +116,7 @@ function Layout() {
     acceptedConditions,
     activeQuestion,
     checkAnswer,
+    gameLost,
     gameStart,
     questions,
     loadingQuestions,
@@ -135,7 +141,7 @@ function Layout() {
                 <Outlet context={outletContext} />
               </div>
               <QuestionOptions
-                disabled={questionOptionsDisabled}
+                disabled={questionOptionsDisabled || !gameStart}
                 answer={selectedAnswer}
                 setAnswer={setSelectedAnswer}
                 options={questionChoices}

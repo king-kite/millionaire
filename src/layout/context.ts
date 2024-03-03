@@ -11,6 +11,7 @@ export type LayoutOutletContextType = {
 
   activeQuestion?: QuestionType;
   checkAnswer: (answer: string) => void;
+  gameLost: boolean;
   gameStart: boolean;
   loadingQuestions: boolean;
   questions: QuestionType[];
