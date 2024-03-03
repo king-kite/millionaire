@@ -86,4 +86,23 @@ const scores: ScoreType[] = [
 
 scores.reverse();
 
-export { scores };
+const placeholderQuestionOptions = [
+  {
+    id: 'A' as const,
+    title: '',
+  },
+  {
+    id: 'B' as const,
+    title: '',
+  },
+  {
+    id: 'C' as const,
+    title: '',
+  },
+  {
+    id: 'D' as const,
+    title: '',
+  },
+];
+
+export { scores, placeholderQuestionOptions };

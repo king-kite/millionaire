@@ -2,7 +2,7 @@ import type { GetSetStateType } from '../types';
 
 type QuestionOptionsType = {
   options: {
-    id: string;
+    id: 'A' | 'B' | 'C' | 'D';
     title: string;
   }[];
   answer: string | null;

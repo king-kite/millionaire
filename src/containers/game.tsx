@@ -5,9 +5,14 @@ import { HOME_PAGE } from '../config/routes';
 import { useLayoutOutletContext } from '../layout/context';
 
 function Game() {
-  const { acceptedConditions } = useLayoutOutletContext();
-
   const navigate = useNavigate();
+
+  const {
+    acceptedConditions,
+    activeQuestion,
+    gameStart,
+    loadingQuestions: loading,
+  } = useLayoutOutletContext();
 
   React.useEffect(() => {
     if (!acceptedConditions) {
@@ -15,7 +20,11 @@ function Game() {
     }
   }, [navigate, acceptedConditions]);
 
-  return <div className="p-4"></div>;
+  return (
+    <div className="p-4">
+      {loading || !gameStart ? <div>loading</div> : <div>{activeQuestion?.title}</div>}
+    </div>
+  );
 }
 
 export default Game;
