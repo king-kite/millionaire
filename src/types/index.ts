@@ -9,3 +9,15 @@ export type QuestionType = {
   }[];
   correct: string;
 };
+
+export type QuestionOptionsType = {
+  disabled?: boolean;
+  options: {
+    id: 'A' | 'B' | 'C' | 'D';
+    title: string;
+    wrong?: boolean;
+    right?: boolean;
+  }[];
+  answer: string | null;
+  setAnswer: GetSetStateType<string | null>;
+};

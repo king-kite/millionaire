@@ -1,28 +1,25 @@
-import type { GetSetStateType } from '../types';
+import type { QuestionOptionsType } from '../types';
 
-type QuestionOptionsType = {
-  options: {
-    id: 'A' | 'B' | 'C' | 'D';
-    title: string;
-  }[];
-  answer: string | null;
-  setAnswer: GetSetStateType<string | null>;
-};
-
-function QuestionOptions({ answer, setAnswer, options }: QuestionOptionsType) {
+function QuestionOptions({ answer, disabled, setAnswer, options }: QuestionOptionsType) {
   return (
     <ul className="options-container">
       {options.map((option) => {
         return (
           <li
             onClick={() => {
-              if (option.title) {
+              if (option.title && !disabled && !answer) {
                 setAnswer(option.id);
               }
             }}
-            className={`question-option ${
-              answer === option.id ? 'selected-answer' : option.title ? 'no-answer' : ''
-            }`}
+            className={`question-option ${disabled || !!answer ? '!cursor-not-allowed' : ''} ${
+              option.right
+                ? 'right-answer'
+                : option.wrong
+                ? 'wrong-answer'
+                : disabled
+                ? 'hover:!bg-transparent'
+                : 'no-answer'
+            } ${answer === option.id ? 'selected-answer' : !answer && option.title ? '' : ''}`}
             key={option.id}
           >
             {option.title ? (

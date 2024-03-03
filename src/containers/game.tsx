@@ -8,6 +8,7 @@ function Game() {
   const {
     acceptedConditions,
     activeQuestion,
+    checkAnswer,
     gameStart,
     loadingQuestions: loading,
     selectedAnswer,
@@ -53,7 +54,7 @@ function Game() {
               </small>
               <div className="flex justify-between items-center mt-8 w-full">
                 <div className="max-w-[5rem] w-full">
-                  <Button>Yes</Button>
+                  <Button onClick={() => checkAnswer(selectedAnswer)}>Yes</Button>
                 </div>
                 <div className="max-w-[5rem] w-full">
                   <Button onClick={() => setSelectedAnswer(null)}>No</Button>

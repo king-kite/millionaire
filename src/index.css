@@ -130,9 +130,7 @@ ul {
 }
 
 .question-option.wrong-answer {
-  animation-name: wrong-answer;
-  animation-duration: 1.25s;
-  animation-iteration-count: infinite;
+  @apply bg-red-600;
 }
 
 .question-option p {
@@ -257,28 +255,6 @@ ul {
 
   75% {
     @apply bg-green-600;
-  }
-
-  100% {
-    @apply bg-transparent;
-  }
-}
-
-@keyframes wrong-answer {
-  0% {
-    @apply bg-transparent;
-  }
-
-  25% {
-    @apply bg-red-600;
-  }
-
-  50% {
-    @apply bg-transparent;
-  }
-
-  75% {
-    @apply bg-red-600;
   }
 
   100% {

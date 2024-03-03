@@ -10,6 +10,7 @@ export type LayoutOutletContextType = {
   setSelectedAnswer: GetSetStateType<LayoutOutletContextType['selectedAnswer']>;
 
   activeQuestion?: QuestionType;
+  checkAnswer: (answer: string) => void;
   gameStart: boolean;
   loadingQuestions: boolean;
   questions: QuestionType[];

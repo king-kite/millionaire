@@ -9,11 +9,13 @@ import Sidebar from './sidebar';
 import { useGetQuestions } from '../store/queries/questions';
 
 import type { LayoutOutletContextType } from './context';
+import type { QuestionOptionsType } from '../types';
 
 function Layout() {
   const [acceptedConditions, setAcceptedConditions] = React.useState(false);
   const [gameStart, setGameStart] = React.useState(false);
-
+  const [questionChoices, setQuestionChoices] = React.useState<QuestionOptionsType['options']>([]);
+  const [questionOptionsDisabled, setQuestionOptionsDisabled] = React.useState(false);
   const [scoreId, setScoreId] = React.useState(1);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null);
 
@@ -42,10 +44,50 @@ function Layout() {
   // start the game over again
   const startOver = React.useCallback(() => {
     setGameStart(false);
+    setQuestionOptionsDisabled(false);
     setScoreId(1);
     setSelectedAnswer(null);
     refetch();
   }, [refetch]);
+
+  // Handle Wrong Answer
+  const handleWrongAnswer = React.useCallback(() => {}, []);
+
+  // Handle Right Answer
+  const handleRightAnswer = React.useCallback(() => {
+    setTimeout(() => {
+      setScoreId((prevId) => prevId + 1);
+      setQuestionOptionsDisabled(false);
+    }, 10000);
+  }, []);
+
+  // Check If Answer Is Correct Or Not
+  const checkAnswer = React.useCallback(
+    (answer: string) => {
+      if (activeQuestion) {
+        setQuestionOptionsDisabled(true);
+        setSelectedAnswer(null);
+
+        if (answer === activeQuestion.correct) {
+          handleRightAnswer();
+        } else handleWrongAnswer();
+
+        setQuestionChoices((prevChoices) => {
+          const newChoices = [...prevChoices];
+          return newChoices.map((choice) => {
+            const wasChosen = choice.id === answer;
+
+            return {
+              ...choice,
+              right: choice.id === activeQuestion.correct,
+              wrong: wasChosen && choice.id !== activeQuestion.correct,
+            };
+          });
+        });
+      }
+    },
+    [activeQuestion, handleRightAnswer, handleWrongAnswer]
+  );
 
   // create a react router outlet context.
   // Didnt want to use react context. (just for fun)
@@ -58,6 +100,7 @@ function Layout() {
       setSelectedAnswer,
 
       activeQuestion,
+      checkAnswer,
       gameStart,
       scoreId,
       startOver,
@@ -67,6 +110,7 @@ function Layout() {
   }, [
     acceptedConditions,
     activeQuestion,
+    checkAnswer,
     gameStart,
     questions,
     loadingQuestions,
@@ -74,6 +118,11 @@ function Layout() {
     scoreId,
     startOver,
   ]);
+
+  React.useEffect(() => {
+    const questionChoices = activeQuestion ? activeQuestion.choices : placeholderQuestionOptions;
+    setQuestionChoices(questionChoices);
+  }, [activeQuestion]);
 
   return (
     <div className="layout-wrapper">
@@ -86,9 +135,10 @@ function Layout() {
                 <Outlet context={outletContext} />
               </div>
               <QuestionOptions
+                disabled={questionOptionsDisabled}
                 answer={selectedAnswer}
                 setAnswer={setSelectedAnswer}
-                options={activeQuestion?.choices || placeholderQuestionOptions}
+                options={questionChoices}
               />
             </div>
 
