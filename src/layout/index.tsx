@@ -105,6 +105,7 @@ function Layout() {
 
       activeQuestion,
       checkAnswer,
+      currentScore,
       gameLost,
       gameStart,
       scoreId,
@@ -116,6 +117,7 @@ function Layout() {
     acceptedConditions,
     activeQuestion,
     checkAnswer,
+    currentScore,
     gameLost,
     gameStart,
     questions,

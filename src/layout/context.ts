@@ -1,6 +1,7 @@
 import { useOutletContext } from 'react-router-dom';
 
 import type { GetSetStateType, QuestionType } from '../types';
+import type { ScoreType } from './data';
 
 export type LayoutOutletContextType = {
   acceptedConditions: boolean;
@@ -11,6 +12,7 @@ export type LayoutOutletContextType = {
 
   activeQuestion?: QuestionType;
   checkAnswer: (answer: string) => void;
+  currentScore?: ScoreType | null;
   gameLost: boolean;
   gameStart: boolean;
   loadingQuestions: boolean;

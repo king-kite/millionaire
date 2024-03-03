@@ -227,7 +227,7 @@ ul {
 }
 
 .question-title {
-  @apply font-bold text-sm text-gray-100 md:text-base;
+  @apply font-bold leading-6 text-sm text-gray-100 md:text-base;
 }
 
 /* loader */
