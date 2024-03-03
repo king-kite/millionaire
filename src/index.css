@@ -228,6 +228,14 @@ ul {
   @apply font-extrabold text-gray-900;
 }
 
+/* loader */
+.loader {
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+
+  @apply border-4 border-solid border-tertiary-200 border-t-tertiary-500 h-7 w-7;
+}
+
 /* animations */
 
 @keyframes right-answer {
@@ -271,6 +279,14 @@ ul {
 
   100% {
     @apply bg-transparent;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

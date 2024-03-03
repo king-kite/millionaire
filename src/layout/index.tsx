@@ -1,12 +1,11 @@
 import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import { placeholderQuestionOptions, scores } from './data';
 import Footer from './footer';
 import Header from './header';
 import QuestionOptions from './question-options';
 import Sidebar from './sidebar';
-import { GAME_PAGE } from '../config/routes';
 import { useGetQuestions } from '../store/queries/questions';
 
 import type { LayoutOutletContextType } from './context';
@@ -17,8 +16,6 @@ function Layout() {
 
   const [scoreId, setScoreId] = React.useState(1);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null);
-
-  const navigate = useNavigate();
 
   const { data: questions, loading: loadingQuestions } = useGetQuestions({
     enabled: acceptedConditions,
@@ -51,13 +48,6 @@ function Layout() {
       loadingQuestions,
     };
   }, [acceptedConditions, activeQuestion, gameStart, questions, loadingQuestions, scoreId]);
-
-  // Only start a game if the player accepts the terms
-  React.useEffect(() => {
-    if (acceptedConditions) {
-      navigate(GAME_PAGE);
-    }
-  }, [navigate, acceptedConditions]);
 
   return (
     <div className="layout-wrapper">

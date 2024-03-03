@@ -15,7 +15,7 @@ function Button({ children, href, ...props }: ButtonType) {
   return (
     <Container href={href}>
       <button
-        className="bg-primary-500 border border-primary-200 border-solid cursor-pointer font-semibold p-4 rounded text-gray-100 text-sm tracking-wide w-full hover:bg-transparent"
+        className="bg-primary-500 border border-primary-200 border-solid cursor-pointer font-semibold p-2 rounded text-gray-100 text-sm tracking-wide w-full hover:bg-transparent"
         {...props}
       >
         {children}

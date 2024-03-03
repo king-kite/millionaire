@@ -1,8 +1,14 @@
+import { Navigate } from 'react-router-dom';
+
 import { Button } from '../components/controls';
+import { GAME_PAGE } from '../config/routes';
 import { useLayoutOutletContext } from '../layout/context';
 
 function Home() {
-  const { setAcceptedConditions } = useLayoutOutletContext();
+  const { acceptedConditions, setAcceptedConditions } = useLayoutOutletContext();
+
+  // Only start a game if the player accepts the terms
+  if (acceptedConditions) return <Navigate to={GAME_PAGE} />;
 
   return (
     <div className="p-4">
