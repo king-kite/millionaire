@@ -87,9 +87,26 @@ export function useGetQuestions(options?: {
     } else setLoading(false);
   }, [onError, data, enabled]);
 
+  const refetch = React.useCallback(() => {
+    setLoading(true);
+    getData({
+      onError(data) {
+        setError(data);
+        if (onError) onError(data);
+      },
+      onSuccess(data) {
+        setData(data);
+      },
+      onSettled() {
+        setLoading(false);
+      },
+    });
+  }, [onError]);
+
   return {
     data,
     error,
     loading,
+    refetch,
   };
 }

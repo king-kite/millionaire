@@ -33,7 +33,7 @@ function Sidebar({
 
   // Handle Game Start animation
   // where each score blinks at a specific interval
-  const { status, toggleInterval, removeInterval } = useInterval(
+  const { status, toggleInterval } = useInterval(
     function () {
       if (scoreId >= scoresLength) {
         // If the blinker is at the top
@@ -71,16 +71,18 @@ function Sidebar({
   React.useEffect(() => {
     // Stop animation if scoreAnimate < -1
     if (scoreAnimate < -1) {
-      removeInterval();
+      toggleInterval('pause');
       // start game once start animation is complete
       if (acceptedConditions) setGameStart(true);
     }
 
     // If game hasnt started, start
-    if (status === 'pause' && acceptedConditions) {
+    if (status === 'pause' && acceptedConditions && !gameStart) {
+      setScoreAnimate(0);
+      setGameStart(false);
       toggleInterval('play');
     }
-  }, [acceptedConditions, removeInterval, scoreAnimate, setGameStart, status, toggleInterval]);
+  }, [acceptedConditions, gameStart, scoreAnimate, setGameStart, status, toggleInterval]);
 
   return (
     <div className="side-container">

@@ -17,7 +17,11 @@ function Layout() {
   const [scoreId, setScoreId] = React.useState(1);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null);
 
-  const { data: questions, loading: loadingQuestions } = useGetQuestions({
+  const {
+    data: questions,
+    loading: loadingQuestions,
+    refetch,
+  } = useGetQuestions({
     enabled: acceptedConditions,
     onError(error) {
       window.alert(error.message);
@@ -35,19 +39,41 @@ function Layout() {
     return { activeScore, activeQuestion, currentScore };
   }, [scoreId, questions, gameStart]);
 
+  // start the game over again
+  const startOver = React.useCallback(() => {
+    setGameStart(false);
+    setScoreId(1);
+    setSelectedAnswer(null);
+    refetch();
+  }, [refetch]);
+
   // create a react router outlet context.
   // Didnt want to use react context. (just for fun)
   const outletContext: LayoutOutletContextType = React.useMemo(() => {
     return {
       acceptedConditions,
       setAcceptedConditions,
+
+      selectedAnswer,
+      setSelectedAnswer,
+
       activeQuestion,
       gameStart,
       scoreId,
+      startOver,
       questions,
       loadingQuestions,
     };
-  }, [acceptedConditions, activeQuestion, gameStart, questions, loadingQuestions, scoreId]);
+  }, [
+    acceptedConditions,
+    activeQuestion,
+    gameStart,
+    questions,
+    loadingQuestions,
+    selectedAnswer,
+    scoreId,
+    startOver,
+  ]);
 
   return (
     <div className="layout-wrapper">

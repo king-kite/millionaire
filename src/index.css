@@ -228,6 +228,10 @@ ul {
   @apply font-extrabold text-gray-900;
 }
 
+.question-title {
+  @apply font-bold text-sm text-gray-100 md:text-base;
+}
+
 /* loader */
 .loader {
   border-radius: 50%;
