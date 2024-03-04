@@ -36,20 +36,20 @@ function Game() {
         <div className="flex flex-col h-full justify-between">
           <h3 className="question-title">{activeQuestion?.title}</h3>
 
-          <div className="flex justify-between items-center w-full">
-            <div className="max-w-[8rem] w-full">
-              {activeQuestion && activeQuestion.id > 1 && (
+          {activeQuestion && activeQuestion.id > 1 && (
+            <div className="flex justify-between items-center w-full">
+              <div className="max-w-[8rem] w-full">
                 <Button disabled={!!selectedAnswer} onClick={() => setCanStartOver(true)}>
                   Start Over
                 </Button>
-              )}
+              </div>
+              <div className="max-w-[8rem] w-full">
+                <Button disabled={!!selectedAnswer} onClick={() => setCanQuit(true)}>
+                  Walk Away
+                </Button>
+              </div>
             </div>
-            <div className="max-w-[4rem] w-full">
-              <Button disabled={!!selectedAnswer} onClick={() => setCanQuit(true)}>
-                Quit
-              </Button>
-            </div>
-          </div>
+          )}
 
           {selectedAnswer && (
             <Modal
