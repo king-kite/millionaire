@@ -5,7 +5,7 @@ import { useInterval } from '../hooks';
 const NEXT_QUESTION_DELAY = 10000;
 
 const classes =
-  'font-extrabold leading-[4rem] text-gray-100 text-center text-4xl tracking-wider md:text-5xl';
+  'font-extrabold leading-[4rem] text-gray-100 text-center text-4xl tracking-wider md:leading-[5rem] md:text-5xl';
 
 function WinScreen({
   scoreTitle,
