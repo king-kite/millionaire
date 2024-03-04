@@ -13,8 +13,10 @@ export type LayoutOutletContextType = {
   activeQuestion?: QuestionType;
   checkAnswer: (answer: string) => void;
   currentScore?: ScoreType | null;
+  endGame: () => void;
   gameLost: boolean;
   gameStart: boolean;
+  gameOver: boolean;
   loadingQuestions: boolean;
   questions: QuestionType[];
   scoreId: number;

@@ -1,11 +1,12 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { placeholderQuestionOptions, scores } from './data';
 import Footer from './footer';
 import Header from './header';
 import QuestionOptions from './question-options';
 import Sidebar from './sidebar';
+import { GAME_OVER_PAGE } from '../config/routes';
 import { useGetQuestions } from '../store/queries/questions';
 
 import type { LayoutOutletContextType } from './context';
@@ -15,10 +16,13 @@ function Layout() {
   const [acceptedConditions, setAcceptedConditions] = React.useState(false);
   const [gameLost, setGameLost] = React.useState(false);
   const [gameStart, setGameStart] = React.useState(false);
+  const [gameOver, setGameOver] = React.useState(false);
   const [questionChoices, setQuestionChoices] = React.useState<QuestionOptionsType['options']>([]);
   const [questionOptionsDisabled, setQuestionOptionsDisabled] = React.useState(false);
   const [scoreId, setScoreId] = React.useState(1);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const {
     data: questions,
@@ -33,9 +37,7 @@ function Layout() {
 
   const { activeScore, activeQuestion, currentScore } = React.useMemo(() => {
     const activeScore = scores.find((score) => score.id === scoreId); // score for current question
-    const currentScore = activeScore
-      ? scores.find((score) => score.id === activeScore.id - 1)
-      : null; // score for previous question won
+    const currentScore = scores.find((score) => score.id === scoreId - 1); // score for previous question won
     const activeQuestion = gameStart
       ? questions.find((question) => question.id === activeScore?.id)
       : undefined;
@@ -46,11 +48,17 @@ function Layout() {
   const startOver = React.useCallback(() => {
     setGameLost(false);
     setGameStart(false);
+    setGameOver(false);
     setQuestionOptionsDisabled(false);
     setScoreId(1);
     setSelectedAnswer(null);
     refetch();
   }, [refetch]);
+
+  // end the same
+  const endGame = React.useCallback(() => {
+    setGameOver(true);
+  }, []);
 
   // Handle Wrong Answer
   const handleWrongAnswer = React.useCallback(() => {
@@ -60,9 +68,15 @@ function Layout() {
   // Handle Right Answer
   const handleRightAnswer = React.useCallback(() => {
     setTimeout(() => {
-      setScoreId((prevId) => prevId + 1);
+      setScoreId((prevId) => {
+        const nextId = prevId + 1;
+        if (nextId > scores.length) {
+          setGameOver(true);
+        }
+        return nextId;
+      });
       setQuestionOptionsDisabled(false);
-    }, 10000);
+    }, 100);
   }, []);
 
   // Check If Answer Is Correct Or Not
@@ -106,8 +120,10 @@ function Layout() {
       activeQuestion,
       checkAnswer,
       currentScore,
+      endGame,
       gameLost,
       gameStart,
+      gameOver,
       scoreId,
       startOver,
       questions,
@@ -118,8 +134,10 @@ function Layout() {
     activeQuestion,
     checkAnswer,
     currentScore,
+    endGame,
     gameLost,
     gameStart,
+    gameOver,
     questions,
     loadingQuestions,
     selectedAnswer,
@@ -132,34 +150,44 @@ function Layout() {
     setQuestionChoices(questionChoices);
   }, [activeQuestion]);
 
+  React.useEffect(() => {
+    if (gameOver) navigate(GAME_OVER_PAGE);
+  }, [gameOver, navigate]);
+
   return (
     <div className="layout-wrapper">
       <div className="w-full">
         <div className="layout-container">
           <Header />
-          <div className="main-container">
-            <div className="app-outlet">
-              <div className="app-screens">
-                <Outlet context={outletContext} />
-              </div>
-              <QuestionOptions
-                disabled={questionOptionsDisabled || !gameStart}
-                answer={selectedAnswer}
-                setAnswer={setSelectedAnswer}
-                options={questionChoices}
-              />
-            </div>
+          {gameOver ? (
+            <Outlet context={outletContext} />
+          ) : (
+            <>
+              <div className="main-container">
+                <div className="app-outlet">
+                  <div className="app-screens">
+                    <Outlet context={outletContext} />
+                  </div>
+                  <QuestionOptions
+                    disabled={questionOptionsDisabled || !gameStart}
+                    answer={selectedAnswer}
+                    setAnswer={setSelectedAnswer}
+                    options={questionChoices}
+                  />
+                </div>
 
-            <Sidebar
-              acceptedConditions={acceptedConditions}
-              activeScore={activeScore}
-              currentScore={currentScore}
-              scoreId={scoreId}
-              setScoreId={setScoreId}
-              gameStart={gameStart}
-              setGameStart={setGameStart}
-            />
-          </div>
+                <Sidebar
+                  acceptedConditions={acceptedConditions}
+                  activeScore={activeScore}
+                  currentScore={currentScore}
+                  scoreId={scoreId}
+                  setScoreId={setScoreId}
+                  gameStart={gameStart}
+                  setGameStart={setGameStart}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
       <Footer />

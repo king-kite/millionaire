@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { Button, Modal } from '../components/controls';
-import { HOME_PAGE, LOSE_GAME_PAGE, QUIT_URL } from '../config/routes';
+import { HOME_PAGE, LOSE_GAME_PAGE } from '../config/routes';
 import { useLayoutOutletContext } from '../layout/context';
 
 function Game() {
@@ -10,6 +10,7 @@ function Game() {
     acceptedConditions,
     activeQuestion,
     checkAnswer,
+    endGame,
     gameLost,
     gameStart,
     loadingQuestions: loading,
@@ -65,7 +66,7 @@ function Game() {
               onCancel={() => (canStartOver ? setCanStartOver(false) : setCanQuit(false))}
               onConfirm={() => {
                 if (canStartOver) startOver();
-                else window.location.href = QUIT_URL;
+                else endGame();
                 if (canStartOver) setCanStartOver(false);
                 else setCanQuit(false);
               }}
