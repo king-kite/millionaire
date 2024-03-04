@@ -7,12 +7,11 @@ import Header from './header';
 import QuestionOptions from './question-options';
 import Sidebar from './sidebar';
 import { GAME_OVER_PAGE } from '../config/routes';
+import WinScreen from '../containers/win-screen';
 import { useGetQuestions } from '../store/queries/questions';
 
 import type { LayoutOutletContextType } from './context';
 import type { QuestionOptionsType } from '../types';
-
-const NEXT_QUESTION_DELAY = 10000;
 
 function Layout() {
   const [acceptedConditions, setAcceptedConditions] = React.useState(false);
@@ -23,6 +22,7 @@ function Layout() {
   const [questionOptionsDisabled, setQuestionOptionsDisabled] = React.useState(false);
   const [scoreId, setScoreId] = React.useState(1);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null);
+  const [showWinScreen, setShowWinScreen] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -67,18 +67,17 @@ function Layout() {
     setGameLost(true);
   }, []);
 
+  console.log({ scoreId });
+
   // Handle Right Answer
-  const handleRightAnswer = React.useCallback(() => {
-    setTimeout(() => {
-      setScoreId((prevId) => {
-        const nextId = prevId + 1;
-        if (nextId > scores.length) {
-          setGameOver(true);
-        }
-        return nextId;
-      });
-      setQuestionOptionsDisabled(false);
-    }, NEXT_QUESTION_DELAY);
+  const handleRightAnswer = React.useCallback((prevScoreId: number) => {
+    const nextId = prevScoreId + 1;
+    if (nextId > scores.length) {
+      setGameOver(true);
+    }
+    setScoreId(nextId);
+    setQuestionOptionsDisabled(false);
+    setShowWinScreen(false);
   }, []);
 
   // Check If Answer Is Correct Or Not
@@ -89,7 +88,7 @@ function Layout() {
         setSelectedAnswer(null);
 
         if (answer === activeQuestion.correct) {
-          handleRightAnswer();
+          setShowWinScreen(true);
         } else handleWrongAnswer();
 
         setQuestionChoices((prevChoices) => {
@@ -106,7 +105,7 @@ function Layout() {
         });
       }
     },
-    [activeQuestion, handleRightAnswer, handleWrongAnswer]
+    [activeQuestion, handleWrongAnswer]
   );
 
   // create a react router outlet context.
@@ -168,7 +167,15 @@ function Layout() {
               <div className="main-container">
                 <div className="app-outlet">
                   <div className="app-screens">
-                    <Outlet context={outletContext} />
+                    {showWinScreen ? (
+                      <WinScreen
+                        onFinish={() => {
+                          handleRightAnswer(scoreId);
+                        }}
+                      />
+                    ) : (
+                      <Outlet context={outletContext} />
+                    )}
                   </div>
                   <QuestionOptions
                     disabled={questionOptionsDisabled || !gameStart}
