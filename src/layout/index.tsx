@@ -196,6 +196,7 @@ function Layout() {
                   acceptedConditions={acceptedConditions}
                   activeScore={activeScore}
                   currentScore={currentScore}
+                  questionOptionsDisabled={questionOptionsDisabled}
                   scoreId={scoreId}
                   setScoreId={setScoreId}
                   gameStart={gameStart}

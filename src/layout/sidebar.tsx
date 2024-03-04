@@ -14,6 +14,7 @@ type SidebarProps = {
   acceptedConditions: boolean;
   activeScore?: ScoreType | null;
   currentScore?: ScoreType | null;
+  questionOptionsDisabled: boolean;
   scoreId: number;
   setScoreId: GetSetStateType<number>;
   gameStart: boolean;
@@ -25,11 +26,49 @@ function Sidebar({
   activeScore,
   currentScore,
   gameStart,
+  questionOptionsDisabled,
   scoreId,
   setScoreId,
   setGameStart,
 }: SidebarProps) {
   const [scoreAnimate, setScoreAnimate] = React.useState(0); // track animation play/pause. Will stop if -2. go backworks if -1
+
+  const [activeLifeLines, setActiveLifeLines] = React.useState([1, 2, 3]);
+
+  const lifelines = React.useMemo(() => {
+    const allDisabled = !gameStart || questionOptionsDisabled;
+    return [
+      {
+        id: 1,
+        disabled: allDisabled,
+        children: <span className="small">50:50</span>,
+        active: activeLifeLines.find((lifeline) => lifeline === 1),
+        performAction: () => console.log('50/50'),
+      },
+      {
+        id: 2,
+        disabled: allDisabled,
+        children: (
+          <span className="lifeline-icon">
+            <PhoneIcon />
+          </span>
+        ),
+        active: activeLifeLines.find((lifeline) => lifeline === 2),
+        performAction: () => console.log('Call A friend'),
+      },
+      {
+        id: 3,
+        disabled: allDisabled,
+        children: (
+          <span className="lifeline-icon">
+            <UsersIcon />
+          </span>
+        ),
+        active: activeLifeLines.find((lifeline) => lifeline === 3),
+        performAction: () => console.log('Ask the audience'),
+      },
+    ];
+  }, [activeLifeLines, gameStart, questionOptionsDisabled]);
 
   // Handle Game Start animation
   // where each score blinks at a specific interval
@@ -87,19 +126,26 @@ function Sidebar({
   return (
     <div className="side-container">
       <ul className="lifelines">
-        <li className="lifeline">
-          <span className="small">50:50</span>
-        </li>
-        <li className="lifeline">
-          <span className="lifeline-icon">
-            <PhoneIcon />
-          </span>
-        </li>
-        <li className="lifeline">
-          <span className="lifeline-icon">
-            <UsersIcon />
-          </span>
-        </li>
+        {lifelines.map((lifeline, index) => {
+          return (
+            <li
+              key={index}
+              onClick={() => {
+                if (lifeline.active && !lifeline.disabled) {
+                  lifeline.performAction();
+                  setActiveLifeLines((prevActions) =>
+                    prevActions.filter((item) => item !== lifeline.id)
+                  );
+                }
+              }}
+              className={`lifeline ${
+                lifeline.disabled ? 'disabled' : !lifeline.active ? 'used' : 'active'
+              }`}
+            >
+              {lifeline.children}
+            </li>
+          );
+        })}
       </ul>
       <h3 className="font-extrabold my-2 px-4 py-1 text-base text-gray-100">Your Score</h3>
       <div className="score-container">
