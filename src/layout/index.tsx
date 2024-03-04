@@ -12,6 +12,8 @@ import { useGetQuestions } from '../store/queries/questions';
 import type { LayoutOutletContextType } from './context';
 import type { QuestionOptionsType } from '../types';
 
+const NEXT_QUESTION_DELAY = 10000;
+
 function Layout() {
   const [acceptedConditions, setAcceptedConditions] = React.useState(false);
   const [gameLost, setGameLost] = React.useState(false);
@@ -76,7 +78,7 @@ function Layout() {
         return nextId;
       });
       setQuestionOptionsDisabled(false);
-    }, 100);
+    }, NEXT_QUESTION_DELAY);
   }, []);
 
   // Check If Answer Is Correct Or Not
