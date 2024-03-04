@@ -14,6 +14,7 @@ function Game() {
     gameLost,
     gameStart,
     loadingQuestions: loading,
+    setQuestionOptionsDisabled,
     selectedAnswer,
     setSelectedAnswer,
     startOver,
@@ -21,6 +22,15 @@ function Game() {
 
   const [canStartOver, setCanStartOver] = React.useState(false);
   const [canQuit, setCanQuit] = React.useState(false);
+
+  React.useEffect(() => {
+    // Disable the question options if any other modal is opened
+    if (canQuit || canStartOver) {
+      setQuestionOptionsDisabled(true);
+    } else {
+      setQuestionOptionsDisabled(false);
+    }
+  }, [canQuit, canStartOver, setQuestionOptionsDisabled]);
 
   // Only start a game if the player accepts the terms
   if (!acceptedConditions) return <Navigate to={HOME_PAGE} />;

@@ -10,6 +10,8 @@ export type LayoutOutletContextType = {
   selectedAnswer: string | null;
   setSelectedAnswer: GetSetStateType<LayoutOutletContextType['selectedAnswer']>;
 
+  setQuestionOptionsDisabled: (state: boolean) => void;
+
   activeQuestion?: QuestionType;
   checkAnswer: (answer: string) => void;
   currentScore?: ScoreType | null;

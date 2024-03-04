@@ -121,6 +121,8 @@ function Layout() {
       selectedAnswer,
       setSelectedAnswer,
 
+      setQuestionOptionsDisabled,
+
       activeQuestion,
       checkAnswer,
       currentScore,
