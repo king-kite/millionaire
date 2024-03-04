@@ -1,7 +1,8 @@
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { Button } from '../components/controls';
-import { HOME_PAGE, LOSE_GAME_PAGE } from '../config/routes';
+import { Button, Modal } from '../components/controls';
+import { HOME_PAGE, LOSE_GAME_PAGE, QUIT_URL } from '../config/routes';
 import { useLayoutOutletContext } from '../layout/context';
 
 function Game() {
@@ -16,6 +17,9 @@ function Game() {
     setSelectedAnswer,
     startOver,
   } = useLayoutOutletContext();
+
+  const [canStartOver, setCanStartOver] = React.useState(false);
+  const [canQuit, setCanQuit] = React.useState(false);
 
   // Only start a game if the player accepts the terms
   if (!acceptedConditions) return <Navigate to={HOME_PAGE} />;
@@ -34,36 +38,38 @@ function Game() {
 
           <div className="flex justify-between items-center w-full">
             <div className="max-w-[8rem] w-full">
-              <Button disabled={!!selectedAnswer} onClick={() => startOver()}>
-                Start Again
-              </Button>
+              {activeQuestion && activeQuestion.id > 1 && (
+                <Button disabled={!!selectedAnswer} onClick={() => setCanStartOver(true)}>
+                  Start Over
+                </Button>
+              )}
             </div>
             <div className="max-w-[4rem] w-full">
-              <Button
-                disabled={!!selectedAnswer}
-                onClick={() => {
-                  window.location.href = 'https://www.github.com/king-kite/';
-                }}
-              >
+              <Button disabled={!!selectedAnswer} onClick={() => setCanQuit(true)}>
                 Quit
               </Button>
             </div>
           </div>
 
           {selectedAnswer && (
-            <div className="absolute bg-gradient-to-tr border-2 border-solid border-primary-300 bottom-1/4 from-primary-500 left-1/4 p-4 max-w-[16rem] rounded-md shadow-primary-700 shadow-xl to-primary-400 w-full z-20">
-              <small>
-                <h3 className="question-title text-center">Is that your final answer?</h3>
-              </small>
-              <div className="flex justify-between items-center mt-8 w-full">
-                <div className="max-w-[5rem] w-full">
-                  <Button onClick={() => checkAnswer(selectedAnswer)}>Yes</Button>
-                </div>
-                <div className="max-w-[5rem] w-full">
-                  <Button onClick={() => setSelectedAnswer(null)}>No</Button>
-                </div>
-              </div>
-            </div>
+            <Modal
+              title="Is that your final answer?"
+              onCancel={() => setSelectedAnswer(null)}
+              onConfirm={() => checkAnswer(selectedAnswer)}
+            />
+          )}
+
+          {(canStartOver || canQuit) && (
+            <Modal
+              title="Are you sure?"
+              onCancel={() => (canStartOver ? setCanStartOver(false) : setCanQuit(false))}
+              onConfirm={() => {
+                if (canStartOver) startOver();
+                else window.location.href = QUIT_URL;
+                if (canStartOver) setCanStartOver(false);
+                else setCanQuit(false);
+              }}
+            />
           )}
         </div>
       )}
