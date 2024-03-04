@@ -139,7 +139,7 @@ function Sidebar({
                 }
               }}
               className={`lifeline ${
-                lifeline.disabled ? 'disabled' : !lifeline.active ? 'used' : 'active'
+                !lifeline.active ? 'used' : lifeline.disabled ? 'disabled' : 'active'
               }`}
             >
               {lifeline.children}
