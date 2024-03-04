@@ -62,15 +62,8 @@ function Layout() {
     setGameOver(true);
   }, []);
 
-  // Handle Wrong Answer
-  const handleWrongAnswer = React.useCallback(() => {
-    setGameLost(true);
-  }, []);
-
-  console.log({ scoreId });
-
-  // Handle Right Answer
-  const handleRightAnswer = React.useCallback((prevScoreId: number) => {
+  // Handle Question
+  const handleNextQuestion = React.useCallback((prevScoreId: number) => {
     const nextId = prevScoreId + 1;
     if (nextId > scores.length) {
       setGameOver(true);
@@ -78,6 +71,16 @@ function Layout() {
     setScoreId(nextId);
     setQuestionOptionsDisabled(false);
     setShowWinScreen(false);
+  }, []);
+
+  // Handle Wrong Answer
+  const handleWrongAnswer = React.useCallback(() => {
+    setGameLost(true);
+  }, []);
+
+  // Handle Right Answer
+  const handleRightAnswer = React.useCallback(() => {
+    setShowWinScreen(true);
   }, []);
 
   // Check If Answer Is Correct Or Not
@@ -88,7 +91,7 @@ function Layout() {
         setSelectedAnswer(null);
 
         if (answer === activeQuestion.correct) {
-          setShowWinScreen(true);
+          handleRightAnswer();
         } else handleWrongAnswer();
 
         setQuestionChoices((prevChoices) => {
@@ -105,7 +108,7 @@ function Layout() {
         });
       }
     },
-    [activeQuestion, handleWrongAnswer]
+    [activeQuestion, handleWrongAnswer, handleRightAnswer]
   );
 
   // create a react router outlet context.
@@ -169,8 +172,10 @@ function Layout() {
                   <div className="app-screens">
                     {showWinScreen ? (
                       <WinScreen
+                        guaranteed={activeScore ? activeScore.id % 5 === 0 : false}
+                        scoreTitle={activeScore?.title || '$0'}
                         onFinish={() => {
-                          handleRightAnswer(scoreId);
+                          handleNextQuestion(scoreId);
                         }}
                       />
                     ) : (

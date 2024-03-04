@@ -9,8 +9,6 @@ function GameOver() {
   const [canQuit, setCanQuit] = React.useState(false);
   const { currentScore, gameOver, startOver } = useLayoutOutletContext();
 
-  console.log(currentScore);
-
   if (!gameOver) return <Navigate to={GAME_PAGE} />;
 
   return (
