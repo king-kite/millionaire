@@ -11,12 +11,16 @@ function QuestionOptions({ answer, disabled, setAnswer, options }: QuestionOptio
                 setAnswer(option.id);
               }
             }}
-            className={`question-option ${disabled || !!answer ? '!cursor-not-allowed' : ''} ${
+            className={`question-option ${
+              !option.title || option.title === '' || disabled || !!answer
+                ? '!cursor-not-allowed'
+                : ''
+            } ${
               option.right
                 ? 'right-answer'
                 : option.wrong
                 ? 'wrong-answer'
-                : disabled
+                : disabled || !option.title || option.title === ''
                 ? '!cursor-not-allowed hover:!bg-transparent'
                 : 'no-answer'
             } ${answer === option.id ? 'selected-answer' : !answer && option.title ? '' : ''}`}
