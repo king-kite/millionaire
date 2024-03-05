@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
+import AskAudience from '../components/ask-audience';
 import { Button, Modal } from '../components/controls';
 import PhoneFriend from '../components/phone-friend';
 import { HOME_PAGE, LOSE_GAME_PAGE } from '../config/routes';
@@ -10,6 +11,7 @@ function Game() {
   const {
     acceptedConditions,
     activeQuestion,
+    askAudience,
     checkAnswer,
     endGame,
     gameLost,
@@ -27,12 +29,12 @@ function Game() {
 
   React.useEffect(() => {
     // Disable the question options if any other modal is opened
-    if (canQuit || canStartOver || phoneFriend !== null) {
+    if (canQuit || canStartOver || phoneFriend !== null || askAudience !== null) {
       setQuestionOptionsDisabled(true);
     } else {
       setQuestionOptionsDisabled(false);
     }
-  }, [canQuit, canStartOver, phoneFriend, setQuestionOptionsDisabled]);
+  }, [canQuit, canStartOver, phoneFriend, askAudience, setQuestionOptionsDisabled]);
 
   // Only start a game if the player accepts the terms
   if (!acceptedConditions) return <Navigate to={HOME_PAGE} />;
@@ -86,6 +88,8 @@ function Game() {
           )}
 
           {phoneFriend && <PhoneFriend {...phoneFriend} />}
+
+          {askAudience && <AskAudience />}
         </div>
       )}
     </div>

@@ -18,6 +18,8 @@ const defaultLifeLines = [LifeLine.Fifty, LifeLine.Phone, LifeLine.Audience];
 
 function Layout() {
   const [acceptedConditions, setAcceptedConditions] = React.useState(false);
+  const [askAudience, setAskAudience] =
+    React.useState<LayoutOutletContextType['askAudience']>(null);
   const [gameLost, setGameLost] = React.useState(false);
   const [gameStart, setGameStart] = React.useState(false);
   const [gameOver, setGameOver] = React.useState(false);
@@ -201,8 +203,101 @@ function Layout() {
 
   // A function to handle audience
   const handleAudience = React.useCallback(() => {
-    window.alert('Handle Life Line For Audience');
-  }, []);
+    if (!activeQuestion || !lifeLines.includes(LifeLine.Phone)) return;
+
+    const DIVIDER = 10;
+
+    let remainingPercentage = 100; // Remaining percentage to distribute among answer choices
+    const totalParticipants = DIVIDER * remainingPercentage; // Total simulated audience participants
+
+    // Initialize response array
+    const audienceResponse = [];
+
+    const difficulty =
+      activeQuestion.id >= 10
+        ? Difficulty.Hard
+        : activeQuestion.id >= 5
+        ? Difficulty.Medium
+        : Difficulty.Easy;
+
+    // Adjust the likelihood of the correct answer being chosen based on difficulty level
+    let correctAnswerLikelihood;
+    switch (difficulty) {
+      case Difficulty.Easy:
+        correctAnswerLikelihood = 0.8; // 80% likelihood for easy questions
+        break;
+      case Difficulty.Medium:
+        correctAnswerLikelihood = 0.7; // 70% likelihood for medium questions
+        break;
+      case Difficulty.Hard:
+        correctAnswerLikelihood = 0.6; // 60% likelihood for hard questions
+        break;
+      default:
+        correctAnswerLikelihood = 0.6; // Default to easy difficulty
+        break;
+    }
+
+    // get only active choices
+    const choices = questionChoices.filter((choice) => choice.title !== '');
+
+    // Assign percentages to each answer choice
+    for (let i = 0; i < choices.length; i++) {
+      let percentage;
+      if (choices[i].id === activeQuestion.correct) {
+        percentage =
+          Math.random() < correctAnswerLikelihood
+            ? Math.floor(Math.random() * 40) + 60
+            : Math.floor(Math.random() * 60); // Correct answer gets 60-100% or 0-60%
+      } else {
+        if (remainingPercentage <= 0) {
+          percentage = 0;
+        } else {
+          const minPercentage = 1; // Minimum percentage for incorrect choices to avoid zeros
+          const maxPercentage = Math.min(remainingPercentage, 40); // Maximum percentage for incorrect choices to avoid negatives
+          percentage = Math.random() * (maxPercentage - minPercentage) + minPercentage;
+          // const minPercentage = Math.min(remainingPercentage, 10); // Minimum percentage for incorrect choices
+          // percentage = Math.random() * (remainingPercentage - minPercentage) + minPercentage;
+        }
+      }
+      remainingPercentage -= percentage;
+
+      audienceResponse.push({
+        id: choices[i].id,
+        percentage: percentage,
+      });
+    }
+
+    // Ensure the correct answer has a higher likelihood
+    audienceResponse.sort((_, b) => (b.id === activeQuestion.correct ? 1 : -1));
+
+    // Normalize the percentages to add up to 1000
+    const totalPercentage = audienceResponse.reduce((acc, cur) => acc + cur.percentage, 0);
+    const scale = totalParticipants / totalPercentage;
+    audienceResponse.forEach((response) => {
+      response.percentage = Math.round(response.percentage * scale);
+    });
+
+    const data = [
+      {
+        id: 'A',
+        percentage: (audienceResponse.find((i) => i.id === 'A')?.percentage || 0) / DIVIDER,
+      },
+      {
+        id: 'B',
+        percentage: (audienceResponse.find((i) => i.id === 'B')?.percentage || 0) / DIVIDER,
+      },
+      {
+        id: 'C',
+        percentage: (audienceResponse.find((i) => i.id === 'C')?.percentage || 0) / DIVIDER,
+      },
+      {
+        id: 'D',
+        percentage: (audienceResponse.find((i) => i.id === 'D')?.percentage || 0) / DIVIDER,
+      },
+    ];
+
+    setAskAudience(data);
+  }, [activeQuestion, lifeLines, questionChoices]);
 
   // A function to handle all lifelines operations
   const handleLifeLineAction = React.useCallback(
@@ -237,6 +332,9 @@ function Layout() {
 
       setQuestionOptionsDisabled,
 
+      askAudience,
+      closeAudience: () => setAskAudience(null),
+
       phoneFriend,
       endPhoneCall: () => setPhoneFriend(null),
 
@@ -258,6 +356,7 @@ function Layout() {
   }, [
     acceptedConditions,
     activeQuestion,
+    askAudience,
     checkAnswer,
     currentScore,
     gameLost,

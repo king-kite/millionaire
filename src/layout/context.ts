@@ -18,6 +18,14 @@ export type LayoutOutletContextType = {
   } | null;
   endPhoneCall: () => void;
 
+  askAudience:
+    | {
+        id: string;
+        percentage: number;
+      }[]
+    | null;
+  closeAudience: () => void;
+
   activeQuestion?: QuestionType;
   checkAnswer: (answer: string) => void;
   currentScore?: ScoreType | null;
