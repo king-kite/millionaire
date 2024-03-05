@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { scores, type ScoreType } from './data';
+import { LifeLine, scores, type ScoreType } from './data';
 import { PhoneIcon, UsersIcon } from '../components/icons';
 import { useInterval } from '../hooks';
 
@@ -14,7 +14,10 @@ type SidebarProps = {
   acceptedConditions: boolean;
   activeScore?: ScoreType | null;
   currentScore?: ScoreType | null;
+  handleLifeLineAction: (lifelineId: LifeLine) => void;
   questionOptionsDisabled: boolean;
+
+  lifelines: number[];
   scoreId: number;
   setScoreId: GetSetStateType<number>;
   gameStart: boolean;
@@ -26,6 +29,8 @@ function Sidebar({
   activeScore,
   currentScore,
   gameStart,
+  handleLifeLineAction,
+  lifelines: activeLifeLines,
   questionOptionsDisabled,
   scoreId,
   setScoreId,
@@ -33,20 +38,18 @@ function Sidebar({
 }: SidebarProps) {
   const [scoreAnimate, setScoreAnimate] = React.useState(0); // track animation play/pause. Will stop if -2. go backworks if -1
 
-  const [activeLifeLines, setActiveLifeLines] = React.useState([1, 2, 3]);
-
   const lifelines = React.useMemo(() => {
     const allDisabled = !gameStart || questionOptionsDisabled;
     return [
       {
-        id: 1,
+        id: LifeLine.Fifty,
         disabled: allDisabled,
         children: <span className="small">50:50</span>,
         active: activeLifeLines.find((lifeline) => lifeline === 1),
-        performAction: () => console.log('50/50'),
+        performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Fifty),
       },
       {
-        id: 2,
+        id: LifeLine.Phone,
         disabled: allDisabled,
         children: (
           <span className="lifeline-icon">
@@ -54,10 +57,10 @@ function Sidebar({
           </span>
         ),
         active: activeLifeLines.find((lifeline) => lifeline === 2),
-        performAction: () => console.log('Call A friend'),
+        performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Phone),
       },
       {
-        id: 3,
+        id: LifeLine.Audience,
         disabled: allDisabled,
         children: (
           <span className="lifeline-icon">
@@ -65,10 +68,10 @@ function Sidebar({
           </span>
         ),
         active: activeLifeLines.find((lifeline) => lifeline === 3),
-        performAction: () => console.log('Ask the audience'),
+        performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Audience),
       },
     ];
-  }, [activeLifeLines, gameStart, questionOptionsDisabled]);
+  }, [activeLifeLines, gameStart, questionOptionsDisabled, handleLifeLineAction]);
 
   // Handle Game Start animation
   // where each score blinks at a specific interval
@@ -131,11 +134,8 @@ function Sidebar({
             <li
               key={index}
               onClick={() => {
-                if (lifeline.active && !lifeline.disabled) {
+                if (lifeline.active && !lifeline.disabled && lifeline.performAction) {
                   lifeline.performAction();
-                  setActiveLifeLines((prevActions) =>
-                    prevActions.filter((item) => item !== lifeline.id)
-                  );
                 }
               }}
               className={`lifeline ${

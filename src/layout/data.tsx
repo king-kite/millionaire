@@ -1,5 +1,11 @@
 import React from 'react';
 
+export enum LifeLine {
+  Fifty = 1,
+  Phone = 2,
+  Audience = 3,
+}
+
 export type ScoreType = {
   id: number;
   title: React.ReactNode;

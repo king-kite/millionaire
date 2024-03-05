@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { placeholderQuestionOptions, scores } from './data';
+import { LifeLine, placeholderQuestionOptions, scores } from './data';
 import Footer from './footer';
 import Header from './header';
 import QuestionOptions from './question-options';
@@ -13,11 +13,14 @@ import { useGetQuestions } from '../store/queries/questions';
 import type { LayoutOutletContextType } from './context';
 import type { QuestionOptionsType } from '../types';
 
+const defaultLifeLines = [LifeLine.Fifty, LifeLine.Phone, LifeLine.Audience];
+
 function Layout() {
   const [acceptedConditions, setAcceptedConditions] = React.useState(false);
   const [gameLost, setGameLost] = React.useState(false);
   const [gameStart, setGameStart] = React.useState(false);
   const [gameOver, setGameOver] = React.useState(false);
+  const [lifeLines, setLifeLines] = React.useState(defaultLifeLines);
   const [questionChoices, setQuestionChoices] = React.useState<QuestionOptionsType['options']>([]);
   const [questionOptionsDisabled, setQuestionOptionsDisabled] = React.useState(false);
   const [scoreId, setScoreId] = React.useState(1);
@@ -46,22 +49,6 @@ function Layout() {
     return { activeScore, activeQuestion, currentScore };
   }, [scoreId, questions, gameStart]);
 
-  // start the game over again
-  const startOver = React.useCallback(() => {
-    setGameLost(false);
-    setGameStart(false);
-    setGameOver(false);
-    setQuestionOptionsDisabled(false);
-    setScoreId(1);
-    setSelectedAnswer(null);
-    refetch();
-  }, [refetch]);
-
-  // end the same
-  const endGame = React.useCallback(() => {
-    setGameOver(true);
-  }, []);
-
   // Handle Question
   const handleNextQuestion = React.useCallback((prevScoreId: number) => {
     const nextId = prevScoreId + 1;
@@ -73,16 +60,6 @@ function Layout() {
     setShowWinScreen(false);
   }, []);
 
-  // Handle Wrong Answer
-  const handleWrongAnswer = React.useCallback(() => {
-    setGameLost(true);
-  }, []);
-
-  // Handle Right Answer
-  const handleRightAnswer = React.useCallback(() => {
-    setShowWinScreen(true);
-  }, []);
-
   // Check If Answer Is Correct Or Not
   const checkAnswer = React.useCallback(
     (answer: string) => {
@@ -91,8 +68,12 @@ function Layout() {
         setSelectedAnswer(null);
 
         if (answer === activeQuestion.correct) {
-          handleRightAnswer();
-        } else handleWrongAnswer();
+          // handle right answer i.e. showing win screen
+          setShowWinScreen(true);
+        } else {
+          // handle the wrong answer i.e. show game lost screen
+          setGameLost(true);
+        }
 
         setQuestionChoices((prevChoices) => {
           const newChoices = [...prevChoices];
@@ -108,7 +89,46 @@ function Layout() {
         });
       }
     },
-    [activeQuestion, handleWrongAnswer, handleRightAnswer]
+    [activeQuestion]
+  );
+
+  // start the game over again
+  const startOver = React.useCallback(() => {
+    setGameLost(false);
+    setGameStart(false);
+    setGameOver(false);
+    setQuestionOptionsDisabled(false);
+    setScoreId(1);
+    setLifeLines(defaultLifeLines);
+    setSelectedAnswer(null);
+    refetch();
+  }, [refetch]);
+
+  // A function to handle the 50:50 lifeline
+  const handle5050Lifeline = React.useCallback(() => {
+    // Check if the 50:50 lifeline is still available
+    if (lifeLines.includes(LifeLine.Fifty)) {
+      console.log('DO 5050');
+    }
+  }, [lifeLines]);
+
+  // A function to handle all lifelines operations
+  const handleLifeLineAction = React.useCallback(
+    (lifeline: LifeLine) => {
+      switch (lifeline) {
+        case LifeLine.Fifty:
+          handle5050Lifeline();
+          break;
+        case LifeLine.Phone:
+        case LifeLine.Audience:
+          console.log(lifeline);
+          break;
+        default:
+          break;
+      }
+      setLifeLines((prevActions) => prevActions.filter((item) => item !== lifeline));
+    },
+    [handle5050Lifeline]
   );
 
   // create a react router outlet context.
@@ -126,7 +146,10 @@ function Layout() {
       activeQuestion,
       checkAnswer,
       currentScore,
-      endGame,
+      endGame: () => {
+        // A function to end the game
+        setGameOver(true);
+      },
       gameLost,
       gameStart,
       gameOver,
@@ -140,7 +163,6 @@ function Layout() {
     activeQuestion,
     checkAnswer,
     currentScore,
-    endGame,
     gameLost,
     gameStart,
     gameOver,
@@ -196,6 +218,8 @@ function Layout() {
                   acceptedConditions={acceptedConditions}
                   activeScore={activeScore}
                   currentScore={currentScore}
+                  handleLifeLineAction={handleLifeLineAction}
+                  lifelines={lifeLines}
                   questionOptionsDisabled={questionOptionsDisabled}
                   scoreId={scoreId}
                   setScoreId={setScoreId}
