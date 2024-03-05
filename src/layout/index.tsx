@@ -9,6 +9,7 @@ import Sidebar from './sidebar';
 import { GAME_OVER_PAGE } from '../config/routes';
 import WinScreen from '../containers/win-screen';
 import { useGetQuestions } from '../store/queries/questions';
+import { getRandomNumber } from '../utils';
 
 import type { LayoutOutletContextType } from './context';
 import type { QuestionOptionsType } from '../types';
@@ -67,8 +68,8 @@ function Layout() {
         setQuestionOptionsDisabled(true);
         setSelectedAnswer(null);
 
+        // handle right answer i.e. showing win screen
         if (answer === activeQuestion.correct) {
-          // handle right answer i.e. showing win screen
           setShowWinScreen(true);
         } else {
           // handle the wrong answer i.e. show game lost screen
@@ -107,10 +108,34 @@ function Layout() {
   // A function to handle the 50:50 lifeline
   const handle5050Lifeline = React.useCallback(() => {
     // Check if the 50:50 lifeline is still available
-    if (lifeLines.includes(LifeLine.Fifty)) {
-      console.log('DO 5050');
+    // And the choices count is 4
+    if (lifeLines.includes(LifeLine.Fifty) && questionChoices.length === 4) {
+      // Get an array of the incorrect choices
+      const incorrectChoices = questionChoices.filter(
+        (choice) => choice.id !== activeQuestion?.correct
+      );
+
+      // Remove 2 random choices from the incorrect Choices
+      // Get a random number between 0 and 2 inclusive
+      const randomNumber = getRandomNumber(0, incorrectChoices.length - 1);
+      const keptWrongChoice = incorrectChoices[randomNumber];
+
+      // Update the choices
+      setQuestionChoices((prevChoices) => {
+        const newChoices = [...prevChoices];
+
+        return newChoices.map((choice) => {
+          // Keep the correct and wrong choice
+          if (choice.id === activeQuestion?.correct || choice.id === keptWrongChoice.id)
+            return choice;
+          return {
+            id: choice.id,
+            title: '',
+          };
+        });
+      });
     }
-  }, [lifeLines]);
+  }, [activeQuestion, lifeLines, questionChoices]);
 
   // A function to handle all lifelines operations
   const handleLifeLineAction = React.useCallback(
