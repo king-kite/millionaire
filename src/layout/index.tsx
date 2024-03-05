@@ -199,6 +199,11 @@ function Layout() {
     });
   }, [activeQuestion, questionChoices, lifeLines]);
 
+  // A function to handle audience
+  const handleAudience = React.useCallback(() => {
+    window.alert('Handle Life Line For Audience');
+  }, []);
+
   // A function to handle all lifelines operations
   const handleLifeLineAction = React.useCallback(
     (lifeline: LifeLine) => {
@@ -210,14 +215,14 @@ function Layout() {
           handlePhoneAFriend();
           break;
         case LifeLine.Audience:
-          console.log(lifeline);
+          handleAudience();
           break;
         default:
           break;
       }
       setLifeLines((prevActions) => prevActions.filter((item) => item !== lifeline));
     },
-    [handle5050Lifeline, handlePhoneAFriend]
+    [handle5050Lifeline, handleAudience, handlePhoneAFriend]
   );
 
   // create a react router outlet context.
