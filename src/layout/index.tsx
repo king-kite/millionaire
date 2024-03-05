@@ -203,7 +203,7 @@ function Layout() {
 
   // A function to handle audience
   const handleAudience = React.useCallback(() => {
-    if (!activeQuestion || !lifeLines.includes(LifeLine.Phone)) return;
+    if (!activeQuestion || !lifeLines.includes(LifeLine.Audience)) return;
 
     const DIVIDER = 10;
 

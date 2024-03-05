@@ -45,7 +45,7 @@ function Sidebar({
         id: LifeLine.Fifty,
         disabled: allDisabled,
         children: <span className="small">50:50</span>,
-        active: activeLifeLines.find((lifeline) => lifeline === 1),
+        active: activeLifeLines.find((lifeline) => lifeline === LifeLine.Fifty),
         performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Fifty),
       },
       {
@@ -56,7 +56,7 @@ function Sidebar({
             <PhoneIcon />
           </span>
         ),
-        active: activeLifeLines.find((lifeline) => lifeline === 2),
+        active: activeLifeLines.find((lifeline) => lifeline === LifeLine.Phone),
         performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Phone),
       },
       {
@@ -67,7 +67,7 @@ function Sidebar({
             <UsersIcon />
           </span>
         ),
-        active: activeLifeLines.find((lifeline) => lifeline === 3),
+        active: activeLifeLines.find((lifeline) => lifeline === LifeLine.Audience),
         performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Audience),
       },
     ];

@@ -52,7 +52,7 @@ function Game() {
           <h3 className="question-title">{activeQuestion?.title}</h3>
 
           {activeQuestion && activeQuestion.id > 1 && (
-            <div className="flex justify-between items-center w-full">
+            <div className="flex justify-between items-end h-full w-full">
               <div className="max-w-[8rem] w-full">
                 <Button disabled={!!selectedAnswer} onClick={() => setCanStartOver(true)}>
                   Start Over
