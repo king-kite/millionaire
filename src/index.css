@@ -249,6 +249,10 @@ ul {
   @apply font-bold leading-6 text-sm text-gray-100 md:text-base;
 }
 
+.description-text {
+  @apply font-bold leading-6 text-sm text-gray-100;
+}
+
 .game-over-button {
   border-radius: 50px;
   @apply bg-gradient-to-b border-2 border-primary-500 border-solid cursor-pointer from-primary-600 px-2 py-4 via-primary-500 to-primary-600 question-title text-center;

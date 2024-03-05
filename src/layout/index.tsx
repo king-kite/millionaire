@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { LifeLine, placeholderQuestionOptions, scores } from './data';
+import { Difficulty, LifeLine, placeholderQuestionOptions, scores } from './data';
 import Footer from './footer';
 import Header from './header';
 import QuestionOptions from './question-options';
@@ -24,6 +24,8 @@ function Layout() {
   const [lifeLines, setLifeLines] = React.useState(defaultLifeLines);
   const [questionChoices, setQuestionChoices] = React.useState<QuestionOptionsType['options']>([]);
   const [questionOptionsDisabled, setQuestionOptionsDisabled] = React.useState(false);
+  const [phoneFriend, setPhoneFriend] =
+    React.useState<LayoutOutletContextType['phoneFriend']>(null);
   const [scoreId, setScoreId] = React.useState(1);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null);
   const [showWinScreen, setShowWinScreen] = React.useState(false);
@@ -137,6 +139,66 @@ function Layout() {
     }
   }, [activeQuestion, lifeLines, questionChoices]);
 
+  // A function to handle the phone a friend lifeline
+  const handlePhoneAFriend = React.useCallback(() => {
+    if (!activeQuestion || !lifeLines.includes(LifeLine.Phone)) return;
+
+    const difficulty =
+      activeQuestion.id >= 10
+        ? Difficulty.Hard
+        : activeQuestion.id >= 5
+        ? Difficulty.Medium
+        : Difficulty.Easy;
+
+    // Calculate the probability based on the difficulty level
+    let probability: number;
+    switch (difficulty) {
+      case Difficulty.Easy:
+        probability = Math.random() * 30 + 70; // Range: 70-100%
+        break;
+      case Difficulty.Medium:
+        probability = Math.random() * 40 + 60; // Range: 60-100%
+        break;
+      case Difficulty.Hard:
+        probability = Math.random() * 50 + 50; // Range: 50-100%
+        break;
+      default:
+        probability = 50; // Default probability
+        break;
+    }
+
+    // Round the probability to two decimal places
+    probability = parseFloat(probability.toFixed(2));
+
+    // Generate a random response from the friend
+    const correctAnswer = activeQuestion.correct;
+
+    // Using questionChoices incase 50:50 has been used
+    const incorrectChoices = questionChoices.filter(
+      (choice) => choice.id !== activeQuestion.correct && choice.title.trim() !== ''
+    );
+    const incorrectAnswer = incorrectChoices[getRandomNumber(0, incorrectChoices.length - 1)].id;
+    const showCorrectAnswer = Math.random() < probability / 100;
+    const answer = showCorrectAnswer ? correctAnswer : incorrectAnswer;
+
+    let title = '';
+
+    if (probability >= 95) {
+      title = `It's definitely ${answer}.`;
+    } else if (probability >= 80) {
+      title = `I'm pretty sure it's ${answer}`;
+    } else if (probability >= 60) {
+      title = `I believe it's ${answer}.`;
+    } else {
+      title = `I think it's ${answer}.`;
+    }
+
+    setPhoneFriend({
+      title,
+      probability: `I'm ${Math.round(probability)}% sure.`,
+    });
+  }, [activeQuestion, questionChoices, lifeLines]);
+
   // A function to handle all lifelines operations
   const handleLifeLineAction = React.useCallback(
     (lifeline: LifeLine) => {
@@ -145,6 +207,8 @@ function Layout() {
           handle5050Lifeline();
           break;
         case LifeLine.Phone:
+          handlePhoneAFriend();
+          break;
         case LifeLine.Audience:
           console.log(lifeline);
           break;
@@ -153,7 +217,7 @@ function Layout() {
       }
       setLifeLines((prevActions) => prevActions.filter((item) => item !== lifeline));
     },
-    [handle5050Lifeline]
+    [handle5050Lifeline, handlePhoneAFriend]
   );
 
   // create a react router outlet context.
@@ -167,6 +231,9 @@ function Layout() {
       setSelectedAnswer,
 
       setQuestionOptionsDisabled,
+
+      phoneFriend,
+      endPhoneCall: () => setPhoneFriend(null),
 
       activeQuestion,
       checkAnswer,
@@ -191,6 +258,7 @@ function Layout() {
     gameLost,
     gameStart,
     gameOver,
+    phoneFriend,
     questions,
     loadingQuestions,
     selectedAnswer,

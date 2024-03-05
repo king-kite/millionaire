@@ -12,6 +12,12 @@ export type LayoutOutletContextType = {
 
   setQuestionOptionsDisabled: (state: boolean) => void;
 
+  phoneFriend: {
+    title: string;
+    probability: string;
+  } | null;
+  endPhoneCall: () => void;
+
   activeQuestion?: QuestionType;
   checkAnswer: (answer: string) => void;
   currentScore?: ScoreType | null;
@@ -20,6 +26,7 @@ export type LayoutOutletContextType = {
   gameStart: boolean;
   gameOver: boolean;
   loadingQuestions: boolean;
+
   questions: QuestionType[];
   scoreId: number;
   startOver: () => void;

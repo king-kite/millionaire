@@ -1,5 +1,11 @@
 import React from 'react';
 
+export enum Difficulty {
+  Easy = 1,
+  Medium = 2,
+  Hard = 3,
+}
+
 export enum LifeLine {
   Fifty = 1,
   Phone = 2,

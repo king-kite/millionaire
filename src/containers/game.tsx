@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { Button, Modal } from '../components/controls';
+import PhoneFriend from '../components/phone-friend';
 import { HOME_PAGE, LOSE_GAME_PAGE } from '../config/routes';
 import { useLayoutOutletContext } from '../layout/context';
 
@@ -14,6 +15,7 @@ function Game() {
     gameLost,
     gameStart,
     loadingQuestions: loading,
+    phoneFriend,
     setQuestionOptionsDisabled,
     selectedAnswer,
     setSelectedAnswer,
@@ -25,12 +27,12 @@ function Game() {
 
   React.useEffect(() => {
     // Disable the question options if any other modal is opened
-    if (canQuit || canStartOver) {
+    if (canQuit || canStartOver || phoneFriend !== null) {
       setQuestionOptionsDisabled(true);
     } else {
       setQuestionOptionsDisabled(false);
     }
-  }, [canQuit, canStartOver, setQuestionOptionsDisabled]);
+  }, [canQuit, canStartOver, phoneFriend, setQuestionOptionsDisabled]);
 
   // Only start a game if the player accepts the terms
   if (!acceptedConditions) return <Navigate to={HOME_PAGE} />;
@@ -82,6 +84,8 @@ function Game() {
               }}
             />
           )}
+
+          {phoneFriend && <PhoneFriend {...phoneFriend} />}
         </div>
       )}
     </div>
