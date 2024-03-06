@@ -4,8 +4,7 @@ import { useInterval } from '../hooks';
 
 const NEXT_QUESTION_DELAY = 10 * 1000;
 
-const classes =
-  'font-extrabold leading-[4rem] text-gray-100 text-center text-4xl tracking-wider md:leading-[5rem] md:text-5xl';
+const classes = 'win-screen-text';
 
 function WinScreen({
   scoreTitle,
@@ -38,7 +37,7 @@ function WinScreen({
   }, [count, removeInterval, onFinish]);
 
   return (
-    <div className="flex flex-col h-full items-center justify-center p-4 w-full">
+    <div className="win-screen-container">
       {screenId === 1 ? (
         <h1 className={classes}>You're Right</h1>
       ) : screenId === 2 ? (

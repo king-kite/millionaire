@@ -320,6 +320,14 @@ ul {
   @apply bg-primary-600 border-2 border-gray-100 border-solid flex font-extrabold items-center justify-center h-16 mb-4 mx-auto rounded-full text-xl text-gray-100 w-16;
 }
 
+.win-screen-container {
+  @apply flex flex-col h-full items-center justify-center p-4 w-full;
+}
+
+.win-screen-text {
+  @apply font-extrabold leading-[4rem] text-gray-100 text-center text-3xl tracking-wider;
+}
+
 /* loader */
 .loader {
   border-radius: 50%;
