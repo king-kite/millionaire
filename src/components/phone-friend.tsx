@@ -24,9 +24,7 @@ function PhoneFriend({ title, probability }: { title: string; probability: strin
   return (
     <div>
       <Modal>
-        <div className="bg-primary-600 border-2 border-gray-100 border-solid flex font-extrabold items-center justify-center h-16 mb-4 mx-auto rounded-full text-xl text-gray-100 w-16">
-          {timeLimit}
-        </div>
+        <div className="phone-friend-container">{timeLimit}</div>
         <h1 className="description-text">Friend: {title}</h1>
         <br />
         <h1 className="description-text">Me: How sure are you?</h1>
