@@ -104,7 +104,7 @@ ul {
 }
 
 .app-screens {
-  @apply border-[2px] border-primary-500 border-solid min-h-[18rem] row-span-4 rounded-sm sm:min-h-[auto];
+  @apply border-[2px] border-primary-500 border-solid min-h-[18rem] row-span-4 rounded sm:min-h-[auto];
 }
 
 .options-wrapper {
@@ -151,7 +151,7 @@ ul {
 }
 
 .side-container {
-  @apply border-2 border-primary-500 border-solid outline-1 outline-gray-700 rounded-sm w-2/3 sm:w-full;
+  @apply border-2 border-primary-500 border-solid outline-1 outline-gray-700 rounded w-2/3 sm:w-full;
   @apply absolute bg-primary-600 duration-300 top-0 right-0 opacity-0 translate-x-full z-20;
   @apply sm:h-full sm:bg-transparent sm:static sm:opacity-100 sm:translate-x-0 sm:col-span-2;
 }
@@ -225,6 +225,10 @@ ul {
 
 .score-option {
   @apply font-bold flex items-center justify-between py-[0.125rem] text-tertiary-500 tracking-wide text-[14px] w-full;
+}
+
+.score-option:last-child {
+  @apply rounded-b;
 }
 
 .score-option span:first-child {
