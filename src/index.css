@@ -59,7 +59,7 @@ ul {
 }
 
 .footer-title {
-  @apply font-black px-1 text-base text-gray-200 tracking-wider md:text-lg;
+  @apply font-black px-1 text-center text-sm text-gray-200 tracking-wider sm:text-left sm:text-base md:text-lg;
 }
 
 .horizontal-line {
@@ -67,11 +67,11 @@ ul {
 }
 
 .footer-description {
-  @apply font-semibold px-1 text-sm text-center text-gray-200 tracking-widest uppercase md:text-base;
+  @apply font-semibold px-1 text-xs text-center text-gray-200 tracking-widest uppercase sm:text-sm md:text-base;
 }
 
 .footer-description span {
-  @apply text-base md:text-lg;
+  @apply text-sm sm:text-base md:text-lg;
 }
 
 .title-container {
