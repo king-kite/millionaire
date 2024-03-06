@@ -116,7 +116,7 @@ ul {
 }
 
 .question-option {
-  @apply border-2 border-x-0 border-primary-400 border-solid flex items-center min-h-[48px] p-2 rounded-2xl;
+  @apply border-2 border-x-0 border-primary-400 border-solid flex items-center min-h-[36px] sm:min-h-[48px] p-2 rounded-2xl;
 }
 
 .question-option.no-answer {
@@ -138,16 +138,16 @@ ul {
 }
 
 .question-option p {
-  @apply flex font-medium items-center text-gray-100 text-xs tracking-wide;
+  @apply flex font-medium items-center text-gray-100 text-[10px] tracking-wide xs:text-xs;
 }
 
 .question-option p::before {
   content: '';
-  @apply bg-orange-700 block h-2 mr-2 rounded-full w-2;
+  @apply bg-orange-700 block h-[6px] w-[6px] mr-1 rounded-full sm:mr-2 sm:h-2 sm:w-2;
 }
 
 .question-option p span {
-  @apply font-medium inline-block mr-1 text-orange-700 tracking-widest;
+  @apply font-medium inline-block mr-0.5 text-orange-700 tracking-widest sm:mr-1;
 }
 
 .side-container {
@@ -256,11 +256,11 @@ ul {
 }
 
 .question-title {
-  @apply font-bold leading-6 text-sm text-gray-100 md:text-base;
+  @apply font-semibold leading-6 text-xs text-gray-100 sm:font-bold sm:text-sm md:text-base;
 }
 
 .description-text {
-  @apply font-bold leading-6 text-sm text-gray-100;
+  @apply font-semibold leading-6 text-xs text-gray-100 sm:font-bold sm:text-sm;
 }
 
 .game-over-button {
@@ -278,7 +278,7 @@ ul {
 }
 
 .button-box {
-  @apply bg-primary-500 border border-primary-200 border-solid font-semibold p-2 rounded text-gray-100 text-xs tracking-wide w-full md:text-sm;
+  @apply bg-primary-500 border border-primary-200 border-solid font-semibold p-2 rounded text-gray-100 text-xs tracking-wide w-full sm:text-sm;
 }
 
 .button-box.active {

@@ -42,7 +42,7 @@ function Game() {
   if (gameLost) return <Navigate to={LOSE_GAME_PAGE} />;
 
   return (
-    <div className="h-full p-4 relative min-h-[18rem] w-full sm:min-h-[auto]">
+    <div className="h-full p-3 relative min-h-[18rem] w-full xs:p-4 sm:min-h-[auto]">
       {loading || !gameStart ? (
         <div className="flex h-full items-center justify-center min-h-[18rem] w-full sm:min-h-[auto]">
           <div className="loader"></div>
@@ -52,7 +52,7 @@ function Game() {
           <h3 className="question-title">{activeQuestion?.title}</h3>
 
           {activeQuestion && activeQuestion.id > 1 && (
-            <div className="flex justify-between items-end h-full w-full">
+            <div className="flex justify-between gap-4 items-end h-full w-full">
               <div className="max-w-[8rem] w-full">
                 <Button disabled={!!selectedAnswer} onClick={() => setCanStartOver(true)}>
                   Start Over
