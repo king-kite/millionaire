@@ -331,7 +331,7 @@ ul {
 }
 
 .win-screen-text {
-  @apply font-extrabold leading-[4rem] text-gray-100 text-center text-3xl tracking-wider;
+  @apply font-extrabold leading-[3rem] text-gray-100 text-center text-xl sm:text-2xl sm:leading-[3.5rem] tracking-wider md:leading-[4rem] md:text-3xl;
 }
 
 /* loader */
