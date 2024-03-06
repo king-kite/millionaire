@@ -6,8 +6,10 @@ import Footer from './footer';
 import Header from './header';
 import QuestionOptions from './question-options';
 import Sidebar from './sidebar';
+import LifeLines from '../components/life-lines';
 import { GAME_OVER_PAGE } from '../config/routes';
 import WinScreen from '../containers/win-screen';
+import { useOutClick } from '../hooks';
 import { useGetQuestions } from '../store/queries/questions';
 import { getRandomNumber } from '../utils';
 
@@ -31,6 +33,9 @@ function Layout() {
   const [scoreId, setScoreId] = React.useState(1);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string | null>(null);
   const [showWinScreen, setShowWinScreen] = React.useState(false);
+
+  // control the side container for mobile devices
+  const sidebar = useOutClick();
 
   const navigate = useNavigate();
 
@@ -381,52 +386,68 @@ function Layout() {
 
   return (
     <div className="layout-wrapper">
-      <div className="w-full">
-        <div className="layout-container">
-          <Header />
-          {gameOver ? (
-            <Outlet context={outletContext} />
-          ) : (
-            <>
-              <div className="main-container">
-                <div className="app-outlet">
-                  <div className="app-screens">
-                    {showWinScreen ? (
-                      <WinScreen
-                        guaranteed={activeScore ? activeScore.id % 5 === 0 : false}
-                        scoreTitle={activeScore?.title || '$0'}
-                        onFinish={() => {
-                          handleNextQuestion(scoreId);
-                        }}
-                      />
-                    ) : (
-                      <Outlet context={outletContext} />
-                    )}
-                  </div>
-                  <QuestionOptions
-                    disabled={questionOptionsDisabled || !gameStart}
-                    answer={selectedAnswer}
-                    setAnswer={setSelectedAnswer}
-                    options={questionChoices}
-                  />
+      <div className="layout-container">
+        <Header />
+        {gameOver ? (
+          <Outlet context={outletContext} />
+        ) : (
+          <>
+            <div className="max-w-[14rem] mx-auto mb-2 sm:hidden">
+              <LifeLines
+                handleLifeLineAction={handleLifeLineAction}
+                gameStart={gameStart}
+                lifelines={lifeLines}
+                questionOptionsDisabled={questionOptionsDisabled}
+                showSidebarToggler
+                toggleSidebar={() => {
+                  sidebar.setVisible((prevValue) => !prevValue);
+                }}
+                togglerRef={{
+                  ref: sidebar.buttonRef,
+                }}
+                visible={sidebar.visible}
+              />
+            </div>
+            <div className="main-container">
+              <div className="app-outlet">
+                <div className="app-screens">
+                  {showWinScreen ? (
+                    <WinScreen
+                      guaranteed={activeScore ? activeScore.id % 5 === 0 : false}
+                      scoreTitle={activeScore?.title || '$0'}
+                      onFinish={() => {
+                        handleNextQuestion(scoreId);
+                      }}
+                    />
+                  ) : (
+                    <Outlet context={outletContext} />
+                  )}
                 </div>
-
-                <Sidebar
-                  acceptedConditions={acceptedConditions}
-                  activeScore={activeScore}
-                  currentScore={currentScore}
-                  handleLifeLineAction={handleLifeLineAction}
-                  lifelines={lifeLines}
-                  questionOptionsDisabled={questionOptionsDisabled}
-                  scoreId={scoreId}
-                  setScoreId={setScoreId}
-                  gameStart={gameStart}
-                  setGameStart={setGameStart}
+                <QuestionOptions
+                  disabled={questionOptionsDisabled || !gameStart}
+                  answer={selectedAnswer}
+                  setAnswer={setSelectedAnswer}
+                  options={questionChoices}
                 />
               </div>
-            </>
-          )}
-        </div>
+
+              <Sidebar
+                acceptedConditions={acceptedConditions}
+                activeScore={activeScore}
+                currentScore={currentScore}
+                handleLifeLineAction={handleLifeLineAction}
+                lifelines={lifeLines}
+                questionOptionsDisabled={questionOptionsDisabled}
+                scoreId={scoreId}
+                setScoreId={setScoreId}
+                gameStart={gameStart}
+                setGameStart={setGameStart}
+                ref={sidebar.ref}
+                visible={sidebar.visible}
+              />
+            </div>
+          </>
+        )}
       </div>
       <Footer />
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LifeLine, scores, type ScoreType } from './data';
-import { PhoneIcon, UsersIcon } from '../components/icons';
+import LifeLines from '../components/life-lines';
 import { useInterval } from '../hooks';
 
 import type { GetSetStateType } from '../types';
@@ -22,56 +22,28 @@ type SidebarProps = {
   setScoreId: GetSetStateType<number>;
   gameStart: boolean;
   setGameStart: GetSetStateType<boolean>;
+
+  visible: boolean;
 };
 
-function Sidebar({
-  acceptedConditions,
-  activeScore,
-  currentScore,
-  gameStart,
-  handleLifeLineAction,
-  lifelines: activeLifeLines,
-  questionOptionsDisabled,
-  scoreId,
-  setScoreId,
-  setGameStart,
-}: SidebarProps) {
+function Sidebar(
+  {
+    acceptedConditions,
+    activeScore,
+    currentScore,
+    gameStart,
+    handleLifeLineAction,
+    lifelines: activeLifeLines,
+    questionOptionsDisabled,
+    scoreId,
+    setScoreId,
+    setGameStart,
+    visible, // toggle side container for mobile devices
+  }: SidebarProps,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ref: any
+) {
   const [scoreAnimate, setScoreAnimate] = React.useState(0); // track animation play/pause. Will stop if -2. go backworks if -1
-
-  const lifelines = React.useMemo(() => {
-    const allDisabled = !gameStart || questionOptionsDisabled;
-    return [
-      {
-        id: LifeLine.Fifty,
-        disabled: allDisabled,
-        children: <span className="small">50:50</span>,
-        active: activeLifeLines.find((lifeline) => lifeline === LifeLine.Fifty),
-        performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Fifty),
-      },
-      {
-        id: LifeLine.Phone,
-        disabled: allDisabled,
-        children: (
-          <span className="lifeline-icon">
-            <PhoneIcon />
-          </span>
-        ),
-        active: activeLifeLines.find((lifeline) => lifeline === LifeLine.Phone),
-        performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Phone),
-      },
-      {
-        id: LifeLine.Audience,
-        disabled: allDisabled,
-        children: (
-          <span className="lifeline-icon">
-            <UsersIcon />
-          </span>
-        ),
-        active: activeLifeLines.find((lifeline) => lifeline === LifeLine.Audience),
-        performAction: allDisabled ? undefined : () => handleLifeLineAction(LifeLine.Audience),
-      },
-    ];
-  }, [activeLifeLines, gameStart, questionOptionsDisabled, handleLifeLineAction]);
 
   // Handle Game Start animation
   // where each score blinks at a specific interval
@@ -127,26 +99,15 @@ function Sidebar({
   }, [acceptedConditions, gameStart, scoreAnimate, setGameStart, status, toggleInterval]);
 
   return (
-    <div className="side-container">
-      <ul className="lifelines">
-        {lifelines.map((lifeline, index) => {
-          return (
-            <li
-              key={index}
-              onClick={() => {
-                if (lifeline.active && !lifeline.disabled && lifeline.performAction) {
-                  lifeline.performAction();
-                }
-              }}
-              className={`lifeline ${
-                !lifeline.active ? 'used' : lifeline.disabled ? 'disabled' : 'active'
-              }`}
-            >
-              {lifeline.children}
-            </li>
-          );
-        })}
-      </ul>
+    <div ref={ref} className={`side-container ${visible ? 'show' : ''}`}>
+      <div className="hidden sm:block">
+        <LifeLines
+          handleLifeLineAction={handleLifeLineAction}
+          gameStart={gameStart}
+          lifelines={activeLifeLines}
+          questionOptionsDisabled={questionOptionsDisabled}
+        />
+      </div>
       <h3 className="score-title">Your Score</h3>
       <div className="score-container">
         <p className="score">
@@ -175,4 +136,6 @@ function Sidebar({
   );
 }
 
-export default Sidebar;
+const SidebarWithRef = React.forwardRef<HTMLElement | null, SidebarProps>(Sidebar);
+
+export default SidebarWithRef;
