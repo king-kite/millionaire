@@ -11,9 +11,9 @@ function Home() {
   if (acceptedConditions) return <Navigate to={GAME_PAGE} />;
 
   return (
-    <div className="p-4">
-      <h3 className="mb-2 text-sm text-center text-gray-100 md:text-base">Terms and Agreements</h3>
-      <p className="leading-6 text-gray-100 text-justify text-xs md:leading-[1.5rem] md:text-sm">
+    <div className="p-3 md:p-4">
+      <h3 className="mb-2 terms-title">Terms and Agreements</h3>
+      <p className="terms-description">
         This is a "Demo-Only" presentation brought to you by KITE.{' '}
         <big>
           <b>NO</b>
@@ -25,9 +25,7 @@ function Home() {
         result in a penalty of Federal Copyright Infringement. To continue playing this game, you
         must agree to the terms.
       </p>
-      <h3 className="my-2 text-sm text-center text-gray-100 md:text-base">
-        Do you agree to these terms?
-      </h3>
+      <h3 className="my-2 terms-title">Do you agree to these terms?</h3>
       <div className="flex gap-8 items-center justify-between max-w-xs mx-auto">
         <div className="max-w-[8rem] w-full">
           <Button

@@ -147,7 +147,7 @@ function Sidebar({
           );
         })}
       </ul>
-      <h3 className="font-extrabold my-2 px-4 py-1 text-base text-gray-100">Your Score</h3>
+      <h3 className="score-title">Your Score</h3>
       <div className="score-container">
         <p className="score">
           $&nbsp;&nbsp;

@@ -59,7 +59,7 @@ ul {
 }
 
 .footer-title {
-  @apply font-black px-1 text-lg text-gray-200 tracking-wider md:text-2xl;
+  @apply font-black px-1 text-base text-gray-200 tracking-wider md:text-lg;
 }
 
 .horizontal-line {
@@ -67,19 +67,19 @@ ul {
 }
 
 .footer-description {
-  @apply font-semibold px-1 text-base text-center text-gray-200 tracking-widest uppercase md:text-lg;
+  @apply font-semibold px-1 text-sm text-center text-gray-200 tracking-widest uppercase md:text-base;
 }
 
 .footer-description span {
-  @apply md:text-2xl;
+  @apply text-base md:text-lg;
 }
 
 .title-container {
-  @apply flex justify-between min-h-[5rem] px-8 py-2;
+  @apply flex justify-between min-h-[3rem] px-8 py-2;
 }
 
 .title-text {
-  @apply bg-clip-text bg-gradient-to-br from-secondary-300 to-primary-300 text-transparent font-bold text-base uppercase md:text-2xl;
+  @apply bg-clip-text bg-gradient-to-br from-secondary-300 to-primary-300 text-transparent font-bold text-base uppercase;
 }
 
 .title-text:nth-child(even) {
@@ -87,11 +87,11 @@ ul {
 }
 
 .title-text:last-child {
-  @apply text-5xl items-end;
+  @apply text-3xl items-end;
 }
 
 .title-text-big-first {
-  @apply flex items-end !text-6xl;
+  @apply flex items-end !text-5xl;
   line-height: 0.9;
 }
 
@@ -107,12 +107,16 @@ ul {
   @apply border-[2px] border-primary-500 border-solid row-span-4 rounded-lg;
 }
 
+.options-wrapper {
+  @apply row-span-2 py-4;
+}
+
 .options-container {
-  @apply grid grid-cols-2 gap-4 p-4 row-span-2;
+  @apply grid grid-cols-2 gap-4;
 }
 
 .question-option {
-  @apply border-2 border-x-0 border-primary-400 border-solid flex items-center p-2 rounded-2xl;
+  @apply border-2 border-x-0 border-primary-400 border-solid flex items-center min-h-[48px] p-2 rounded-2xl;
 }
 
 .question-option.no-answer {
@@ -134,12 +138,12 @@ ul {
 }
 
 .question-option p {
-  @apply flex font-medium items-center text-gray-100 text-sm tracking-wide;
+  @apply flex font-medium items-center text-gray-100 text-xs tracking-wide;
 }
 
 .question-option p::before {
   content: '';
-  @apply bg-orange-700 block h-3 mr-2 rounded-full w-3;
+  @apply bg-orange-700 block h-2 mr-2 rounded-full w-2;
 }
 
 .question-option p span {
@@ -155,7 +159,7 @@ ul {
 }
 
 .lifeline {
-  @apply bg-gray-900 border-2 border-primary-500 border-solid cursor-pointer flex items-center justify-center h-12 rounded-full relative w-12;
+  @apply bg-gray-900 border-2 border-primary-500 border-solid cursor-pointer flex items-center justify-center h-10 rounded-full relative w-10;
 }
 
 .lifeline.disabled,
@@ -178,11 +182,11 @@ ul {
 }
 
 .lifeline span {
-  @apply text-gray-100 text-xl;
+  @apply text-gray-100 text-lg;
 }
 
 .lifeline span.small {
-  @apply text-xs;
+  @apply text-[10px];
 }
 
 .lifeline span.lifeline-icon {
@@ -198,11 +202,15 @@ ul {
 }
 
 .score-container {
-  @apply border-x-0 border-y border-primary-500 border-solid px-4 py-2;
+  @apply border-x-0 border-y border-primary-500 border-solid px-4 py-1.5 text-sm;
 }
 
 .score {
-  @apply font-extrabold text-gray-100 text-lg tracking-widest;
+  @apply font-extrabold text-gray-100 text-xs tracking-widest;
+}
+
+.score-title {
+  @apply font-extrabold my-1 px-4 py-0.5 text-xs text-gray-100;
 }
 
 .scores-list {
@@ -210,15 +218,7 @@ ul {
 }
 
 .score-option {
-  @apply font-bold flex items-center justify-between p-1 text-tertiary-500 tracking-wide;
-}
-
-.score-option:first-child {
-  @apply rounded-t-md;
-}
-
-.score-option:last-child {
-  @apply rounded-b-md;
+  @apply font-bold flex items-center justify-between py-[0.125rem] text-tertiary-500 tracking-wide text-[14px] w-full;
 }
 
 .score-option span:first-child {
@@ -257,6 +257,26 @@ ul {
   border-radius: 50px;
   @apply bg-gradient-to-b border-2 border-primary-500 border-solid cursor-pointer from-primary-600 px-2 py-4 via-primary-500 to-primary-600 question-title text-center;
   @apply hover:font-extrabold hover:from-primary-500 hover:via-primary-300 hover:to-primary-500 hover:text-gray-800;
+}
+
+.terms-title {
+  @apply text-xs text-center text-gray-100;
+}
+
+.terms-description {
+  @apply leading-6 text-gray-100 text-justify text-[10px] md:leading-[1.5rem];
+}
+
+.button-box {
+  @apply bg-primary-500 border border-primary-200 border-solid font-semibold p-2 rounded text-gray-100 text-xs tracking-wide w-full md:text-sm;
+}
+
+.button-box.active {
+  @apply cursor-pointer hover:bg-primary-600;
+}
+
+.button-box.disabled {
+  @apply cursor-not-allowed;
 }
 
 /* loader */
