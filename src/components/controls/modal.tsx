@@ -14,11 +14,8 @@ function Modal({
   onCancel?: () => void;
 }) {
   return (
-    <div
-      className="absolute flex items-end justify-center left-0 h-full p-4 pb-16 top-0 w-full z-20"
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
-    >
-      <div className="bg-gradient-to-tr border-2 border-solid border-primary-300 from-primary-500 p-4 max-w-[16rem] rounded-md shadow-primary-700 shadow-xl to-primary-400 w-full">
+    <div className="modal-wrapper" style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+      <div className="modal-container">
         {children ? (
           children
         ) : (
