@@ -51,7 +51,7 @@ ul {
 }
 
 .layout-wrapper {
-  @apply max-w-3xl mx-auto flex flex-col items-center justify-center min-h-screen p-4;
+  @apply max-w-3xl mx-auto flex flex-col items-center justify-center min-h-screen overflow-x-hidden p-4;
 }
 
 .footer-container {
@@ -96,11 +96,11 @@ ul {
 }
 
 .main-container {
-  @apply relative sm:gap-x-3 sm:grid sm:grid-cols-6 mb-2 px-4 py-1;
+  @apply relative sm:gap-x-3 sm:grid sm:grid-cols-7 mb-2 px-4 py-1;
 }
 
 .app-outlet {
-  @apply sm:gap-2 sm:grid sm:grid-rows-6 sm:col-span-4;
+  @apply sm:gap-2 sm:grid sm:grid-rows-6 sm:col-span-5;
 }
 
 .app-screens {
@@ -116,7 +116,7 @@ ul {
 }
 
 .question-option {
-  @apply border-2 border-x-0 border-primary-400 border-solid flex items-center min-h-[36px] sm:min-h-[48px] p-2 rounded-2xl;
+  @apply border-2 border-primary-400 border-solid flex items-center min-h-[36px] relative sm:min-h-[48px] p-2 rounded-lg;
 }
 
 .question-option.no-answer {
