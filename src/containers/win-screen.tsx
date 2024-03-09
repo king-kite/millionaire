@@ -11,7 +11,7 @@ function WinScreen({
   onFinish,
   guaranteed,
 }: {
-  scoreTitle: React.ReactNode;
+  scoreTitle: string;
   onFinish: () => void;
   guaranteed: boolean;
 }) {
@@ -45,13 +45,11 @@ function WinScreen({
           {guaranteed ? (
             <h1 className={classes}>
               You are <br />
-              guaranteed <br />
-              {scoreTitle}
+              guaranteed <br />$ {scoreTitle}
             </h1>
           ) : (
             <h1 className={classes}>
-              You just won <br />
-              {scoreTitle}
+              You just won <br />$ {scoreTitle}
             </h1>
           )}
         </>

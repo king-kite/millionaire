@@ -349,6 +349,22 @@ ul {
 
 /* animations */
 
+@keyframes scaleAnimation {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  55%,
+  100% {
+    transform: translateX(5px) scale(1.05);
+  }
+}
+
 @keyframes show-footer-text {
   0% {
     @apply opacity-0;

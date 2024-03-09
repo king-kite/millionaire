@@ -414,7 +414,7 @@ function Layout() {
                   {showWinScreen ? (
                     <WinScreen
                       guaranteed={activeScore ? activeScore.id % 5 === 0 : false}
-                      scoreTitle={activeScore?.title || '$0'}
+                      scoreTitle={activeScore?.amount || '0'}
                       onFinish={() => {
                         handleNextQuestion(scoreId);
                       }}
