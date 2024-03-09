@@ -151,7 +151,7 @@ ul {
 }
 
 .question-option p span {
-  @apply font-medium flex items-center pt-[0.5px] mr-1 text-orange-700 tracking-widest sm:mr-1;
+  @apply font-medium flex items-center mr-1 text-orange-700 tracking-widest sm:mr-1;
 }
 
 .side-container {
