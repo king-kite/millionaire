@@ -23,7 +23,17 @@ type DataResponseType = {
   isNiche: boolean;
 };
 
-const URL = 'https://the-trivia-api.com/v2/questions?limit=5&types=text_choice';
+const categories = [
+  'science',
+  'sport_and_leisure',
+  'history',
+  'geography',
+  'food_and_drink',
+  'general_knowledge',
+].join(',');
+
+const URL =
+  'https://the-trivia-api.com/v2/questions?limit=5&types=text_choice&categories=' + categories;
 
 const EASY_URL = URL + '&difficulty=easy';
 const MEDIUM_URL = URL + '&difficulty=medium';
