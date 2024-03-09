@@ -37,28 +37,43 @@ function WinScreen({
   }, [count, removeInterval, onFinish]);
 
   return (
-    <div className="win-screen-container">
-      {screenId === 1 ? (
-        <h1 className={classes}>You're Right</h1>
-      ) : screenId === 2 ? (
-        <>
-          {guaranteed ? (
-            <h1 className={classes}>
-              You are <br />
-              guaranteed <br />$ {scoreTitle}
-            </h1>
-          ) : (
-            <h1 className={classes}>
-              You just won <br />$ {scoreTitle}
-            </h1>
-          )}
-        </>
-      ) : (
-        <h1 className={classes}>
-          Get ready for <br />
-          the next round!
-        </h1>
-      )}
+    <div
+      className="h-full w-full"
+      style={{
+        backgroundImage: 'url(/static/images/logo.png)',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div
+        className="win-screen-container"
+        style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        }}
+      >
+        {screenId === 1 ? (
+          <h1 className={classes}>You're Right</h1>
+        ) : screenId === 2 ? (
+          <>
+            {guaranteed ? (
+              <h1 className={classes}>
+                You are <br />
+                guaranteed <br />$ {scoreTitle}
+              </h1>
+            ) : (
+              <h1 className={classes}>
+                You just won <br />$ {scoreTitle}
+              </h1>
+            )}
+          </>
+        ) : (
+          <h1 className={classes}>
+            Get ready for <br />
+            the next round!
+          </h1>
+        )}
+      </div>
     </div>
   );
 }
