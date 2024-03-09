@@ -25,8 +25,8 @@ type DataResponseType = {
 
 const categories = [
   'science',
-  'sport_and_leisure',
-  'history',
+  // 'sport_and_leisure',
+  // 'history',
   'geography',
   'food_and_drink',
   'general_knowledge',
@@ -37,7 +37,8 @@ const URL =
 
 const EASY_URL = URL + '&difficulty=easy';
 const MEDIUM_URL = URL + '&difficulty=medium';
-const HARD_URL = URL + '&difficulty=hard';
+// const HARD_URL = URL + '&difficulty=hard';
+const HARD_URL = URL + '&difficulty=medium';
 
 function shuffleArray(data: string[]) {
   const arr = [...data];
