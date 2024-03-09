@@ -46,8 +46,7 @@ function Layout() {
   } = useGetQuestions({
     enabled: acceptedConditions,
     onError(error) {
-      // window.alert(error.message);
-      console.log(error.message);
+      window.alert(error.message);
     },
   });
 
