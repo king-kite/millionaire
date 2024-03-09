@@ -21,7 +21,7 @@ function Home() {
         real money can/will be made or earned by playing this game. KITE nor ABC Network is
         responsible for any misunderstandings of the aformentioned or following terms. KITE is in no
         way affliated with the ABC Network. <br />
-        This game is intended to showcase the skills on KITE only. Any violation of these terms may
+        This game is intended to showcase the skills of KITE only. Any violation of these terms may
         result in a penalty of Federal Copyright Infringement. To continue playing this game, you
         must agree to the terms.
       </p>
