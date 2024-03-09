@@ -112,8 +112,9 @@ function Layout() {
     setScoreId(1);
     setLifeLines(defaultLifeLines);
     setSelectedAnswer(null);
+    sidebar.setVisible(true); // open sidebar for mobile devices to show the annimation
     refetch();
-  }, [refetch]);
+  }, [refetch, sidebar]);
 
   // A function to handle the 50:50 lifeline
   const handle5050Lifeline = React.useCallback(() => {
@@ -344,6 +345,10 @@ function Layout() {
       phoneFriend,
       endPhoneCall: () => setPhoneFriend(null),
 
+      toggleSidebar(value) {
+        sidebar.setVisible(value === 'open');
+      },
+
       activeQuestion,
       checkAnswer,
       currentScore,
@@ -372,6 +377,7 @@ function Layout() {
     questions,
     loadingQuestions,
     selectedAnswer,
+    sidebar,
     scoreId,
     startOver,
   ]);
@@ -435,6 +441,7 @@ function Layout() {
               <Sidebar
                 acceptedConditions={acceptedConditions}
                 activeScore={activeScore}
+                closeSidebar={() => sidebar.setVisible(false)}
                 currentScore={currentScore}
                 handleLifeLineAction={handleLifeLineAction}
                 lifelines={lifeLines}

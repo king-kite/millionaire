@@ -26,6 +26,8 @@ export type LayoutOutletContextType = {
     | null;
   closeAudience: () => void;
 
+  toggleSidebar: (value: 'open' | 'close') => void;
+
   activeQuestion?: QuestionType;
   checkAnswer: (answer: string) => void;
   currentScore?: ScoreType | null;

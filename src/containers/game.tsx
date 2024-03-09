@@ -42,13 +42,13 @@ function Game() {
   if (gameLost) return <Navigate to={LOSE_GAME_PAGE} />;
 
   return (
-    <div className="h-full p-3 relative min-h-[18rem] w-full xs:p-4 sm:min-h-[auto]">
+    <div className="h-full p-3 relative min-h-[16rem] w-full xs:p-4 sm:min-h-[auto]">
       {loading || !gameStart ? (
-        <div className="flex h-full items-center justify-center min-h-[18rem] w-full sm:min-h-[auto]">
+        <div className="flex h-full items-center justify-center min-h-[16rem] w-full sm:min-h-[auto]">
           <div className="loader"></div>
         </div>
       ) : (
-        <div className="flex flex-col h-full justify-between min-h-[18rem] w-full sm:min-h-[auto]">
+        <div className="flex flex-col h-full justify-between min-h-[16rem] w-full sm:min-h-[auto]">
           <h3 className="question-title">{activeQuestion?.title}</h3>
 
           {activeQuestion && activeQuestion.id > 1 && (

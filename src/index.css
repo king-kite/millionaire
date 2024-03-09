@@ -111,7 +111,7 @@ ul {
 }
 
 .app-screens {
-  @apply border-[2px] border-primary-500 border-solid min-h-[18rem] row-span-4 rounded sm:min-h-[auto];
+  @apply border-[2px] border-primary-500 border-solid min-h-[16rem] row-span-4 rounded sm:min-h-[auto];
 }
 
 .options-wrapper {
@@ -143,16 +143,15 @@ ul {
 }
 
 .question-option p {
-  @apply flex font-medium items-center text-gray-100 text-[10px] tracking-wide xs:text-xs;
+  @apply flex font-medium items-start text-gray-100 text-[10px] tracking-wide xs:text-xs;
 }
-
-.question-option p::before {
+.question-option p span::before {
   content: '';
-  @apply bg-orange-700 block h-[6px] w-[6px] mr-1 rounded-full sm:mr-2 sm:h-2 sm:w-2;
+  @apply bg-orange-700 block h-[6px] w-[6px] mr-0.5 rounded-full sm:mr-2 sm:h-2 sm:w-2;
 }
 
 .question-option p span {
-  @apply font-medium inline-block mr-0.5 text-orange-700 tracking-widest sm:mr-1;
+  @apply font-medium flex items-center pt-[0.5px] mr-1 text-orange-700 tracking-widest sm:mr-1;
 }
 
 .side-container {
@@ -332,7 +331,7 @@ ul {
 }
 
 .win-screen-container {
-  @apply flex flex-col h-full items-center justify-center p-4 min-h-[18rem] w-full sm:min-h-[auto];
+  @apply flex flex-col h-full items-center justify-center p-4 min-h-[16rem] w-full sm:min-h-[auto];
 }
 
 .win-screen-text {

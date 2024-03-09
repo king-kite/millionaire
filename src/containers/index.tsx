@@ -5,7 +5,7 @@ import { GAME_PAGE } from '../config/routes';
 import { useLayoutOutletContext } from '../layout/context';
 
 function Home() {
-  const { acceptedConditions, setAcceptedConditions } = useLayoutOutletContext();
+  const { acceptedConditions, toggleSidebar, setAcceptedConditions } = useLayoutOutletContext();
 
   // Only start a game if the player accepts the terms
   if (acceptedConditions) return <Navigate to={GAME_PAGE} />;
@@ -30,6 +30,7 @@ function Home() {
         <div className="max-w-[8rem] w-full">
           <Button
             onClick={() => {
+              toggleSidebar('open');
               setAcceptedConditions(true);
             }}
           >

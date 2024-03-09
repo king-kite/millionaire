@@ -23,6 +23,8 @@ type SidebarProps = {
   gameStart: boolean;
   setGameStart: GetSetStateType<boolean>;
 
+  closeSidebar: () => void;
+
   visible: boolean;
 };
 
@@ -38,6 +40,7 @@ function Sidebar(
     scoreId,
     setScoreId,
     setGameStart,
+    closeSidebar,
     visible, // toggle side container for mobile devices
   }: SidebarProps,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,7 +90,10 @@ function Sidebar(
     if (scoreAnimate < -1) {
       toggleInterval('pause');
       // start game once start animation is complete
-      if (acceptedConditions) setGameStart(true);
+      if (acceptedConditions) {
+        setGameStart(true);
+        closeSidebar();
+      }
     }
 
     // If game hasnt started, start
@@ -96,7 +102,15 @@ function Sidebar(
       setGameStart(false);
       toggleInterval('play');
     }
-  }, [acceptedConditions, gameStart, scoreAnimate, setGameStart, status, toggleInterval]);
+  }, [
+    acceptedConditions,
+    gameStart,
+    scoreAnimate,
+    setGameStart,
+    status,
+    closeSidebar,
+    toggleInterval,
+  ]);
 
   return (
     <div ref={ref} className={`side-container ${visible ? 'show' : ''}`}>

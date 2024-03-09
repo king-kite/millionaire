@@ -35,16 +35,18 @@ function LostGame() {
         You are leaving with $ {finalAmount}.
       </h3>
 
-      <div className="mt-6">
-        <GameOverButton onClick={() => startOver()}>
-          <big>Play Again</big>
-        </GameOverButton>
-      </div>
+      <div className="flex flex-col mt-0.5 gap-3 xs:mt-2 xs:gap-5 sm:mt-6">
+        <div className="w-full">
+          <GameOverButton onClick={() => startOver()}>
+            <big>Play Again</big>
+          </GameOverButton>
+        </div>
 
-      <div className="mt-8">
-        <GameOverButton onClick={() => setCanQuit(true)}>
-          <big>Exit Game</big>
-        </GameOverButton>
+        <div className="w-full">
+          <GameOverButton onClick={() => setCanQuit(true)}>
+            <big>Exit Game</big>
+          </GameOverButton>
+        </div>
       </div>
 
       {canQuit && (
