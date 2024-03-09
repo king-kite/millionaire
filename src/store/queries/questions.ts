@@ -29,6 +29,15 @@ const EASY_URL = URL + '&difficulty=easy';
 const MEDIUM_URL = URL + '&difficulty=medium';
 const HARD_URL = URL + '&difficulty=hard';
 
+function shuffleArray(data: string[]) {
+  const arr = [...data];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 async function getData(options: {
   onSuccess: (data: any) => void;
   onError: (data: any) => void;
@@ -47,22 +56,28 @@ async function getData(options: {
     const data: DataResponseType[] = [...easyData, ...mediumData, ...hardData];
 
     const questions = data.map((item, index) => {
+      const allChoices = shuffleArray([
+        item.correctAnswer,
+        item.incorrectAnswers[0],
+        item.incorrectAnswers[1],
+        item.incorrectAnswers[2],
+      ]);
       const choices = [
         {
           id: 'A',
-          title: item.incorrectAnswers[0],
+          title: allChoices[0],
         },
         {
           id: 'B',
-          title: item.correctAnswer,
+          title: allChoices[1],
         },
         {
           id: 'C',
-          title: item.incorrectAnswers[1],
+          title: allChoices[2],
         },
         {
           id: 'D',
-          title: item.incorrectAnswers[2],
+          title: allChoices[3],
         },
       ];
 
