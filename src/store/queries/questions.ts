@@ -8,41 +8,26 @@ type ErrorType = {
   message: string;
 };
 
-const choices = [
-  {
-    id: 'A' as const,
-    title: 'Option A',
-  },
-  {
-    id: 'B' as const,
-    title: 'Option B',
-  },
-  {
-    id: 'C' as const,
-    title: 'Option C',
-  },
-  {
-    id: 'D' as const,
-    title: 'Option D',
-  },
-];
-
-const questionsData: QuestionType[] = Array.from({ length: 15 }).map((_, j) => {
-  return {
-    id: j + 1,
-    title: 'Question ' + (j + 1),
-    choices,
-    correct: 'B',
+type DataResponseType = {
+  category: string;
+  id: string;
+  correctAnswer: string;
+  incorrectAnswers: string[];
+  question: {
+    text: string;
   };
-});
-
-const getQuestions = () => {
-  return new Promise<QuestionType[]>((resolve) => {
-    setTimeout(() => {
-      resolve(questionsData);
-    }, 1500);
-  });
+  tags: string[];
+  type: 'text_choice' | 'image_choice';
+  difficulty: 'easy' | 'medium' | 'hard';
+  regions: string[];
+  isNiche: boolean;
 };
+
+const URL = 'https://the-trivia-api.com/v2/questions?limit=5&types=text_choice';
+
+const EASY_URL = URL + '&difficulty=easy';
+const MEDIUM_URL = URL + '&difficulty=medium';
+const HARD_URL = URL + '&difficulty=hard';
 
 async function getData(options: {
   onSuccess: (data: any) => void;
@@ -50,8 +35,46 @@ async function getData(options: {
   onSettled: () => void;
 }) {
   try {
-    const data = await getQuestions();
-    options.onSuccess(data);
+    const easyResponse = await fetch(EASY_URL, { method: 'GET' });
+    const easyData: DataResponseType[] = await easyResponse.json();
+
+    const mediumResponse = await fetch(MEDIUM_URL, { method: 'GET' });
+    const mediumData: DataResponseType[] = await mediumResponse.json();
+
+    const hardResponse = await fetch(HARD_URL, { method: 'GET' });
+    const hardData: DataResponseType[] = await hardResponse.json();
+
+    const data: DataResponseType[] = [...easyData, ...mediumData, ...hardData];
+
+    const questions = data.map((item, index) => {
+      const choices = [
+        {
+          id: 'A',
+          title: item.incorrectAnswers[0],
+        },
+        {
+          id: 'B',
+          title: item.correctAnswer,
+        },
+        {
+          id: 'C',
+          title: item.incorrectAnswers[1],
+        },
+        {
+          id: 'D',
+          title: item.incorrectAnswers[2],
+        },
+      ];
+
+      return {
+        id: index + 1,
+        title: item.question.text,
+        correct: choices.find((choice) => choice.title === item.correctAnswer)?.id || 'A',
+        choices,
+      };
+    });
+
+    options.onSuccess(questions);
   } catch (error) {
     options.onError({ message: (error as any).message });
   } finally {
@@ -70,12 +93,17 @@ export function useGetQuestions(options?: {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    if (enabled && data.length === 0) {
+    if (error && onError) {
+      setError(error);
+    }
+  }, [error, onError]);
+
+  React.useEffect(() => {
+    if (enabled) {
       setLoading(true);
       getData({
         onError(data) {
           setError(data);
-          if (onError) onError(data);
         },
         onSuccess(data) {
           setData(data);
@@ -85,7 +113,7 @@ export function useGetQuestions(options?: {
         },
       });
     } else setLoading(false);
-  }, [onError, data, enabled]);
+  }, [enabled]);
 
   const refetch = React.useCallback(() => {
     setLoading(true);

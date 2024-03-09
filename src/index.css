@@ -261,7 +261,7 @@ ul {
 }
 
 .question-title {
-  @apply font-semibold leading-6 text-xs text-gray-100 sm:font-bold sm:text-sm md:text-base;
+  @apply font-semibold leading-6 text-xs text-gray-100 sm:font-bold sm:leading-7 sm:text-sm md:text-base;
 }
 
 .description-text {
